@@ -1,0 +1,3 @@
+require:
+   - play -> playapps 1.4
+   - com.google.guava -> guava r09

@@ -8,3 +8,6 @@ test-result
 .settings/
 .DS_Store
 leszindeps.iml
+/modules
+/logs
+/lib
