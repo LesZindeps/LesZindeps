@@ -161,6 +161,21 @@
         <span class="error">${field.error}</span><br/>
     </p>
     #{/}
+
+    #{field 'zindep.currentAvailability'}
+    <p>
+        <label>Disponibilit&eacute; :</label>
+
+         #{select field.name, value:field.value, id:field.id,  class:field.errorClass}
+            #{list models.Zindep.Availability.values(), as:'availability'}
+                <option value="${availability.name()}" ${field.value.equals(availability) ? 'selected' : ''} >${availability}</option>
+            #{/list}
+         #{/select}
+
+        Votre disponibilit&eacute; sera affich&eacute;e sur votre profil public
+        <span class="error">${field.error}</span><br/>
+    </p>
+    #{/}
 </fieldset>
 
 <script type="text/javascript" charset="utf-8">
