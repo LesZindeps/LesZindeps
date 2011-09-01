@@ -48,8 +48,8 @@
 #{jQueryValidate class:models.Decision.class, key:'decision' /}
     #{form id:'addForm', action:@saveOptions()}
     <fieldset>
-        <legend>Vos proppositions : </legend>
-            <input type="text" id="id" name="id" value="${decision.id}"  size="50" maxlength="255"/>
+        <legend>Vos propositions : </legend>
+            <input type="hidden" id="id" name="id" value="${decision.id}"  size="50" maxlength="255"/>
   			 <ul id="options">
    				<li>
    					<label>Option 1</label><input type="text" name="option_0"/>
