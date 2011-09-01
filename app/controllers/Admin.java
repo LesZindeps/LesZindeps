@@ -61,7 +61,11 @@ public class Admin extends Controller {
      * Affiche la page d'accueil
      */
     public static void index() {
-        render();
+        if (session.contains("zindepId")) {
+            welcome();
+        } else {
+            render();
+        }
     }
 
     public static void logout() {
