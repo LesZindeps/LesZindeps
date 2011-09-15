@@ -41,7 +41,7 @@ public class Bootstrap extends Job {
     public void doJob() {
         if (Play.mode == Play.Mode.DEV) {
             if (Zindep.count() == 0) {
-                Fixtures.load("test-datas.yml");
+                Fixtures.loadModels("test-datas.yml");
             }
         }
     }
