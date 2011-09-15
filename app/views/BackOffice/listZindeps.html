@@ -42,11 +42,40 @@
             #{else}
                 #{a @BackOffice.setVisible(indep.id)}Montrer#{/a}
             #{/else}
+            #{a @BackOffice.archiveZindep(indep.id)}Archiver#{/a}
         </td>
     </tr>
     #{/list}
-
 </table>
+
+<h1>Liste des anciens Zindeps</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Membre depuis</th>
+        <th>Parti le</th>
+        <th>Localisation</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    #{list items:listOfOldZindeps, as:'indep'}
+    <tr>
+        <td>${indep.firstName}</td>
+        <td>${indep.lastName}</td>
+        <td>${indep.memberSince?.format('dd/MM/yy')}</td>
+        <td>${indep.memberSince?.format('dd/MM/yy')}</td>
+        <td>${indep.email}</td>
+        <td>
+            #{a @BackOffice.restoreZindep(indep.id)}Restaurer#{/a}
+        </td>
+    </tr>
+    #{/list}
+</table>
+
 
 #{a @BackOffice.index()}&larr; Retour#{/a}
 
