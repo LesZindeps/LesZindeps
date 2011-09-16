@@ -42,7 +42,8 @@
             #{else}
                 #{a @BackOffice.setVisible(indep.id)}Montrer#{/a}
             #{/else}
-            #{a @BackOffice.archiveZindep(indep.id)}Archiver#{/a}
+            &nbsp;#{a @BackOffice.archiveZindep(indep.id)}Archiver#{/a}
+            &nbsp;#{a @Application.showProfile(indep.id,indep.firstName,indep.lastName)}Voir le profil#{/a}
         </td>
     </tr>
     #{/list}
