@@ -25,10 +25,13 @@
  */
 
 import models.Zindep;
+import play.Logger;
 import play.Play;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
+
+import java.util.List;
 
 /**
  * Le bootstrap est execute en mode dev au demarrage pour placer quelques utilisateurs en base.
@@ -39,11 +42,25 @@ import play.test.Fixtures;
 public class Bootstrap extends Job {
 
     public void doJob() {
-        if (Play.mode == Play.Mode.DEV) {
-            if (Zindep.count() == 0) {
-                Fixtures.load("test-datas.yml");
+        if (Play.mode == Play.Mode.DEV ) {
+            //before tests run,we load each time the database to isolate them
+            //weirdly, Zindep.count return 0 but there is a conflict in the database (data already exist)
+            //datas are filled byt unit tests
+            if (Zindep.count() == 0 && !Play.runingInTestMode()) {
+                Fixtures.loadModels("test-datas.yml");
+                Logger.debug("loading data");
             }
         }
+
+        //set to isVisible to false, when Zindep hasn't got any pictureUrl
+        //useful to run only once, because each Zindep update will check that pictureUrl is present
+        List<Zindep> zindepsWithoutPictureUrl = Zindep.find(" pictureUrl IS NULL and isVisible = TRUE ").fetch();
+        for(Zindep zindep : zindepsWithoutPictureUrl){
+            zindep.isVisible = false;
+            zindep.save();
+        }
+
+        
     }
 
 }
