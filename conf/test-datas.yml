@@ -33,7 +33,7 @@
 # --------------------------------------------------------------------------------------------------------
 # NE SURTOUT PAS stocker dans ce fichier vos vrais emails et votre linkedInId qui doivent rester secret
 # --------------------------------------------------------------------------------------------------------
-
+#zindep visible, mais sans photo. son champ isVisible sera donc a false en base
 Zindep(z0):
  email: pierre@letesteur.fr
  firstName: Pierre
@@ -55,6 +55,7 @@ Zindep(z1):
  location: Paris
  isVisible: true
  blogUrl: http://www.touilleur-express.fr/
+ pictureUrl: http://media.linkedin.com/mpr/mprx/0_-vl8EBrjrIhgK-YHrn30Eqi1rwQtKlmHKN50EqACfmtC7zMeYPTuXN5uOL6S1n7X1nPY5Pfgv14Y
 
 Zindep(z2):
  email: louis.gueye@xxxxx.com
@@ -66,6 +67,7 @@ Zindep(z2):
  bio: Exemple de bio 1
  isVisible: true
  blogUrl: http://deepintojee.wordpress.com/
+ pictureUrl: http://media.linkedin.com/mpr/mprx/0_8GEYKguuNrz4JQn-a5VTKOgfZlrsJLc-G8Y3K0aObNXE6Tht2XstOxsrn0K5sG9OT3e8xZyEgQ71
 
 Zindep(z3):
  email: pierre2@test.fr
@@ -76,6 +78,7 @@ Zindep(z3):
  techno: Spring,Portlet,J2EE,Architecture,Finance de marché
  bio: Exemple de bio 2
  isVisible: false
+ pictureUrl: https://lh5.googleusercontent.com/-olv_lombZY4/AAAAAAAAAAI/AAAAAAAAA9M/vg7fEsT4yRI/s96-c/photo.jpg
 
 Zindep(z4):
  email: Christophe@test.fr
@@ -85,25 +88,39 @@ Zindep(z4):
  location: Lyon
  techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
  bio: Exemple de bio 3
+ pictureUrl: http://blog.paumard.org/images/my-apple.jpg
 
  Zindep(z5):
- email: hlassiege@gmail.com
+ email: hlassiege@cccc.com
  firstName: Hugo
  lastName: Lassiege
  memberSince: 12/01/2009
  location: Paris
  techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
  bio: Exemple de bio 3
+ pictureUrl: http://media.linkedin.com/mpr/mprx/0_hTReA02iQqGcJd8A8h4BAySmkAlUJuAAC8fcAy2tUq5w6H6lubIkxpZyExAkswrj3CJnOROpv1kM
 
 
  Zindep(z6):
- email: damien.gouyette@gmail.com
+ email: damien.gouyette@xxxxx.com
  firstName: Damien
  lastName: GOUYETTE
  memberSince: 17/01/2009
  location: Paris
  techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
  bio: Exemple de bio 3
+ pictureUrl: http://fr.gravatar.com/userimage/3058211/12200b7206a24bd9e4d9b53cdcb9eb4f.png
+
+ Zindep(z7):
+ email: charles.gay@xxxxx.com
+ firstName: Charles
+ lastName: GAY
+ memberSince: 17/01/2009
+ location: Paris
+ techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
+ bio: Exemple de bio 3
+ isVisible: true
+ pictureUrl: http://media03.linkedin.com/mpr/mpr/shrink_80_80/p/3/000/000/29d/1443143.jpg
 
 Propal(p1):
  title: Architecte super mega trop cool qui roxxe des courges
