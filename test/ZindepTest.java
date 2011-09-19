@@ -9,12 +9,24 @@ import models.*;
 public class ZindepTest extends UnitTest {
 
 
+    @Before
+    public void setUp(){
+       Fixtures.deleteDatabase();
+       Fixtures.loadModels("test-datas.yml");
+    }
+
+    @After
+    public void tearsDown(){
+        Fixtures.deleteDatabase();
+    }
+
+    
     @Test
-    public void shouldReturns3ZindepForFindAllVisibleByName() {
+    public void shouldReturns4ZindepForFindAllVisibleByName() {
         // the default is false
         List<Zindep> result=Zindep.findAllVisibleByName();
         assertNotNull(result);
-        assertEquals(3,result.size());
+        assertEquals(4,result.size());
     }
 
     @Test
@@ -37,6 +49,9 @@ public class ZindepTest extends UnitTest {
         Zindep result3=Zindep.findByMail("pierre@letesteur.fr");
         assertNotNull(result3);
         assertEquals("Pierre", result3.firstName);
-        assertEquals("Letesteur", result3.lastName);               
+        assertEquals("Letesteur", result3.lastName);
     }
+
+
+
 }
