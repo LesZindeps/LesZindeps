@@ -44,8 +44,7 @@ public class Bootstrap extends Job {
     public void doJob() {
         if (Play.mode == Play.Mode.DEV ) {
             //before tests run,we load each time the database to isolate them
-            //weirdly, Zindep.count return 0 but there is a conflict in the database (data already exist)
-            //datas are filled byt unit tests
+            //without that, weirdly, Zindep.count return 0 but there is a conflict in the database (data already exist)
             if (Zindep.count() == 0 && !Play.runingInTestMode()) {
                 Fixtures.loadModels("test-datas.yml");
             }

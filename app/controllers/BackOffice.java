@@ -140,14 +140,9 @@ public class BackOffice extends Controller {
 	 * dans la page HTML grace à Groovy.
 	 */
 	public static void listZindeps() {
-		try {
 			List<Zindep> listOfZindeps = Zindep.findAll();
 			List<OldZindep> listOfOldZindeps = OldZindep.findAll();
 			render(listOfZindeps, listOfOldZindeps);
-		} catch (Throwable t) {
-			t.printStackTrace();
-			// TODO DELETE THIS HORROR
-		}
 	}
 
 	/**
