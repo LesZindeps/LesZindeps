@@ -11,13 +11,13 @@ public class ZindepTest extends UnitTest {
 
     @Before
     public void setUp(){
-       Fixtures.deleteDatabase();
+       Fixtures.deleteAllModels();
        Fixtures.loadModels("test-datas.yml");
     }
 
     @After
     public void tearsDown(){
-        Fixtures.deleteDatabase();
+        Fixtures.deleteAllModels();
     }
 
     

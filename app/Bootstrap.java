@@ -48,12 +48,11 @@ public class Bootstrap extends Job {
             //datas are filled byt unit tests
             if (Zindep.count() == 0 && !Play.runingInTestMode()) {
                 Fixtures.loadModels("test-datas.yml");
-                Logger.debug("loading data");
             }
         }
 
         //set to isVisible to false, when Zindep hasn't got any pictureUrl
-        //useful to run only once, because each Zindep update will check that pictureUrl is present
+        //useful to run only ONCE, because each Zindep update will check that pictureUrl is present
         List<Zindep> zindepsWithoutPictureUrl = Zindep.find(" pictureUrl IS NULL and isVisible = TRUE ").fetch();
         for(Zindep zindep : zindepsWithoutPictureUrl){
             zindep.isVisible = false;

@@ -26,6 +26,7 @@
 
 package controllers;
 
+import models.OldZindep;
 import models.Zindep;
 import play.data.validation.Valid;
 import play.mvc.Before;
@@ -34,114 +35,166 @@ import play.mvc.Controller;
 import java.util.List;
 
 /**
- * Un controleur different pour surveiller l'arrière-boutique.
- * Mon idée est que ce controller n'est pas indispensable. Il sert le temps de la mise en route du projet.
- * Ensuite, il faut que le reste des outils se suffisent à eux-mêmes.
- *
+ * Un controleur different pour surveiller l'arrière-boutique. Mon idée est que
+ * ce controller n'est pas indispensable. Il sert le temps de la mise en route
+ * du projet. Ensuite, il faut que le reste des outils se suffisent à eux-mêmes.
+ * 
  * @author Nicolas Martignole
  * @since 21 déc. 2010 14:21:41
  */
 public class BackOffice extends Controller {
 
-    /**
-     * Methode appelée à chaque fois pour vérifier si l'utilisateur est authentifié ou non.
-     */
-    @Before(unless = {"login"})
-    static void checkLogin() {
-        if (!session.contains("zindepId")) {
-            flash.error("Merci de vous authentifier pour accéder à cette partie.");
-            Admin.index();
-        }
-    }
+	/**
+	 * Methode appelée à chaque fois pour vérifier si l'utilisateur est
+	 * authentifié ou non.
+	 */
+	@Before(unless = { "login" })
+	static void checkLogin() {
+		if (!session.contains("zindepId")) {
+			flash.error("Merci de vous authentifier pour accéder à cette partie.");
+			Admin.index();
+		}
+	}
 
-    /**
-     * Affiche la page d'accueil.
-     */
-    public static void index() {
-        render();
-    }
+	/**
+	 * Affiche la page d'accueil.
+	 */
+	public static void index() {
+		render();
+	}
 
-    /**
-     * Affiche la page de création d'un indep.
-     */
-    public static void newZindep() {
-        render();
-    }
+	/**
+	 * Affiche la page de création d'un indep.
+	 */
+	public static void newZindep() {
+		render();
+	}
 
-    /**
-     * Valide et sauvegarde un nouvel indépendant
-     *
-     * @param zindep est le nouvel indépendant
-     */
-    public static void storeNewZindep(@Valid Zindep zindep) {
-        // Handle errors
-        if (validation.hasErrors()) {
-            render("@newZindep", zindep);
-        }
+	/**
+	 * Valide et sauvegarde un nouvel indépendant
+	 * 
+	 * @param zindep
+	 *            est le nouvel indépendant
+	 */
+	public static void storeNewZindep(@Valid Zindep zindep) {
+		// Handle errors
+		if (validation.hasErrors()) {
+			render("@newZindep", zindep);
+		}
 
-        Zindep existing = Zindep.findByMail(zindep.email);
-        if (existing != null) {
-            flash.error("Attention, un compte avec cet email existe déjà.");
-            render("@newZindep", zindep);
-        }
+		Zindep existing = Zindep.findByMail(zindep.email);
+		if (existing != null) {
+			flash.error("Attention, un compte avec cet email existe déjà.");
+			render("@newZindep", zindep);
+		}
 
-        zindep.validateAndSave();
-        flash.success("Nouvel indépendant enregistré");
-        index();
-    }
+		zindep.validateAndSave();
+		flash.success("Nouvel indépendant enregistré");
+		index();
+	}
 
-    /**
-     * Retourne la liste des zindeps, le tag listOfZindeps est directement itéré dans la page HTML
-     * grace à Groovy.
-     */
-    public static void listZindeps() {
-        List<Zindep> listOfZindeps = Zindep.findAll();
-        render(listOfZindeps);
-    }
+	/**
+	 * Archive this zindep to keep infos.
+	 * @param id
+	 * to archive
+	 */
+	public static void archiveZindep(String id) {
+		Zindep zindep = Zindep.findById(id);
+		OldZindep newOldZindep = new OldZindep(zindep);
 
+		boolean created = newOldZindep.create();
+		
+		if (created) {
+			zindep.delete();
+	
+			flash.success("Nouvel indépendant archivé");
+		} else {
+			flash.success("Nouvel indépendant impossible à archiver ..");
+		}
 
-    /**
-     * Permet de rendre visible un compte.
-     *
-     * @param id est la cle primaire.
-     */
-    public static void setVisible(String id) {
-        Zindep z = Zindep.findById(id);
-        if (z == null) {
-            flash.error("Compte non trouvé");
-            listZindeps(); // Cette methode coupe le flow d'execution, Play leve une exception et termine l'execution
-        }
-        // ... donc le "else" est implicite
-        z.isVisible = Boolean.TRUE;
-        z.save();
-        flash.success("Le compte est maintenant visible sur le site des Zindeps.");
-        listZindeps();
-    }
+		listZindeps();
+	}
 
-    /**
-     * Permet de rendre invisible un compte.
-     *
-     * @param id de l'utilisateur.
-     */
-    public static void setInvisible(String id) {
-        Zindep z = Zindep.findById(id);
-        if (z == null) {
-            flash.error("Compte non trouvé");
-            listZindeps(); // Cette methode coupe le flow d'execution, Play leve une exception et termine l'execution
-        }
-        // ... donc le "else" est implicite
-        z.isVisible = Boolean.FALSE;
-        z.save();
-        flash.success("Le compte est maintenant invisible sur le site.");
-        listZindeps();
+	/**
+	 * Restore a zindep.
+	 * @param id zindep to restore
+	 */
+	public static void restoreZindep(String id) {
+		OldZindep oldZindep = OldZindep.findById(id);
+		Zindep phenixZindep = oldZindep.toZindep();
 
-    }
+		boolean created = phenixZindep.create();
+		if (created) {
+			oldZindep.delete();
+			
+			flash.success("Cet indépendant vient de renaître de ces cendres ;)");
+		} else {
+			flash.success("problème de restauration");
+		}
+		
+		listZindeps();
+	}
 
-    public static void triggerMissionPurgeBatchManually(){
-        new jobs.MissionPurgeJob().now();
-        flash.success("Purge des anciennes missions activées");
-        index();
-    }
+	/**
+	 * Retourne la liste des zindeps, le tag listOfZindeps est directement itéré
+	 * dans la page HTML grace à Groovy.
+	 */
+	public static void listZindeps() {
+		try {
+			List<Zindep> listOfZindeps = Zindep.findAll();
+			List<OldZindep> listOfOldZindeps = OldZindep.findAll();
+			render(listOfZindeps, listOfOldZindeps);
+		} catch (Throwable t) {
+			t.printStackTrace();
+			// TODO DELETE THIS HORROR
+		}
+	}
+
+	/**
+	 * Permet de rendre visible un compte.
+	 * 
+	 * @param id
+	 *            est la cle primaire.
+	 */
+	public static void setVisible(String id) {
+		Zindep z = Zindep.findById(id);
+		if (z == null) {
+			flash.error("Compte non trouvé");
+			listZindeps(); // Cette methode coupe le flow d'execution, Play leve
+							// une exception et termine l'execution
+		}
+		// ... donc le "else" est implicite
+		z.isVisible = Boolean.TRUE;
+		z.save();
+		flash.success("Le compte est maintenant visible sur le site des Zindeps.");
+		listZindeps();
+	}
+
+	/**
+	 * Permet de rendre invisible un compte.
+	 * 
+	 * @param id
+	 *            de l'utilisateur.
+	 */
+	public static void setInvisible(String id) {
+		Zindep z = Zindep.findById(id);
+		if (z == null) {
+			flash.error("Compte non trouvé");
+			listZindeps(); // Cette methode coupe le flow d'execution, Play leve
+							// une exception et termine l'execution
+		}
+		// ... donc le "else" est implicite
+		z.isVisible = Boolean.FALSE;
+		z.save();
+		flash.success("Le compte est maintenant invisible sur le site.");
+		listZindeps();
+
+	}
+
+	public static void triggerMissionPurgeBatchManually() {
+		new jobs.MissionPurgeJob().now();
+		flash.success("Purge des anciennes missions activées");
+		index();
+	}
 
 }
-

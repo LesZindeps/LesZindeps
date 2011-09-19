@@ -33,7 +33,7 @@
 # --------------------------------------------------------------------------------------------------------
 # NE SURTOUT PAS stocker dans ce fichier vos vrais emails et votre linkedInId qui doivent rester secret
 # --------------------------------------------------------------------------------------------------------
-#zindep visible, mais sans photo. son champ isVisible sera donc a false en base
+#zindep visible, mais sans photo. son champ isVisible sera donc a false en base via bootstrap
 Zindep(z0):
  email: pierre@letesteur.fr
  firstName: Pierre
