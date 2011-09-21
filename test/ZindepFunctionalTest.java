@@ -10,7 +10,11 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class ZindepFunctionalTest extends FunctionalTest {
+/**
+ * base test for functional Tests.
+ * it add some specific methods like setSession.
+ */
+public abstract class ZindepFunctionalTest extends FunctionalTest {
 
     public static final String COOKIE_PREFIX = Play.configuration.getProperty("application.session.cookie", "PLAY");
     public static final boolean COOKIE_SECURE = Play.configuration.getProperty("application.session.secure", "false").toLowerCase().equals("true");
