@@ -1,18 +1,15 @@
-import java.util.Collection;import static com.google.common.collect.Maps.newHashMap;
+import controllers.AdminDecisions;
+import junit.framework.Assert;
+import models.Decision;
+import models.DecisionOption;
+import org.junit.Test;
+import play.test.UnitTest;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
-import models.Decision;
-import models.DecisionOption;
-
-import org.junit.Test;
-
-import play.test.UnitTest;
-import controllers.AdminDecisions;
-import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 
 
 public class AdminDecisionsTest extends UnitTest {
