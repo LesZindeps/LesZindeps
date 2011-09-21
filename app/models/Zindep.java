@@ -60,6 +60,9 @@ import play.templates.JavaExtensions;
  */
 @Entity
 public class Zindep extends GenericModel {
+
+    public static final String UNDEFINED = "undefined";
+
     public static enum Availability {
         NOT_AVAILABLE("Non disponible"),
         PART_TIME_ONLY("A temps partiel"),
@@ -73,6 +76,15 @@ public class Zindep extends GenericModel {
 
         public String toString() {
             return label;
+        }
+
+        /**
+         * remove label whitespace and set to lowercase.
+         * this method is useful on the client side, because
+         * @return
+         */
+        public String removeWhiteSpaces(){
+            return label.replace(" ","").toLowerCase();
         }
     }
 
@@ -172,7 +184,7 @@ public class Zindep extends GenericModel {
         if (s == null) {
             return findAllVisibleByName();
         }
-        if (s.trim().equals("")) {
+        if (s.trim().isEmpty()) {
             return findAllVisibleByName();
         }
         return find("from Zindep z where z.index like ? and z.isVisible=true order by z.lastName", JavaExtensions.noAccents("%" + s.toLowerCase() + "%")).fetch();
@@ -191,7 +203,7 @@ public class Zindep extends GenericModel {
     void index() {
         this.index = JavaExtensions.noAccents(this.firstName).toLowerCase() + " ";
         this.index += JavaExtensions.noAccents(this.lastName).toLowerCase() + " ";
-        if ("undefined".equals(pictureUrl)) {
+        if (UNDEFINED.equals(pictureUrl)) {
             // clean up invalid image
             pictureUrl = null;
         }
@@ -206,6 +218,8 @@ public class Zindep extends GenericModel {
 
     /**
      * Recherche par email.
+     * @param mail
+     * @return zindep found or null
      */
     public static Zindep findByMail(String mail) {
         if (mail == null) {
@@ -216,6 +230,8 @@ public class Zindep extends GenericModel {
 
     /**
      * Recherche par LinkedIn id
+     * @param id  LinkedIn id
+     * @return zindep found or null
      */
     public static Zindep findByLinkedInId(String id) {
         if (id == null) return null;

@@ -1,11 +1,11 @@
 #{extends 'main.html' /}
 #{set title:'Qui' /}
-<div class="grid_6 prefix_2">
+<div class="grid_6 prefix_2 suffix_4">
     <h1>Travaillons ensemble</h1>
 </div>
 
 
-<div class="grid_4">
+<div class="prefix_2 grid_4">
     #{form @search()}
     <input type="text" name="s" value="" class="searchBox" size="40" placeholder="Recherche par nom ou prénom"/>
     #{/form}
@@ -18,16 +18,15 @@
         #{list items:listOfZindeps, as:'indep'}
         #{if (indep_index % 5)==1}
         <TR>
+            &nbsp;
             #{/if}
-            <td>#{a @showProfile(indep.id,indep.firstName,indep.lastName)}
+            <td class="${indep.currentAvailability.removeWhiteSpaces()}">#{a @showProfile(indep.id,indep.firstName,indep.lastName)}
                 #{if indep.pictureUrl && indep.pictureUrl!='undefined'}
                 <img src="${indep.pictureUrl}"
                      alt="${indep.firstName} ${indep.lastName}"
                      class="zindepPicture"/>
                 #{/if}
-                #{else}
-                <img src="@{'public/images/no_photo.png'}" alt="No picture yet" class="zindepPicture"/>
-                #{/else}
+
                 #{/a}<br/>
                 ${indep.firstName} ${indep.lastName}<br/>
                 #{a @showProfile(indep.id,indep.firstName,indep.lastName),class:'button green small'}Profil#{/a}
@@ -35,12 +34,17 @@
                 <a href="${indep.blogUrl}" class='button green small' target="_blank">Blog</a>
                 #{/if}
             </td>
+
             #{if (indep_index % 5)==0}
         </TR>
         #{/if}
         #{/list}
     </table>
 
-
 </div>
+#{filterZindepsAvailable listOfZindeps:listOfZindeps /}
+
+
 <div class="clear">&nbsp;</div>
+
+
