@@ -1,21 +1,14 @@
 %{zindepdispo=_listOfZindeps.size() }%
 #{list items:_listOfZindeps, as:'indep'}
-        %{if(indep.currentAvailability.removeWhiteSpaces()=='nondisponible'){zindepdispo--}  /}%
- #{/list}
+%{if(indep.currentAvailability.removeWhiteSpaces()=='nondisponible'){zindepdispo--}  /}%
+#{/list}
 
 #{if (zindepdispo)==0}
-        <div class="grid_2"><a id="zindepdispo" class="button blue" href="#">aucun zindep n'est disponible</a></div>
+<div class="alpha omega grid_4"><a id="zindepdispo" class="button blue" href="#">aucun zindep n'est disponible</a></div>
 #{/if}
- #{else}
-        <div class="grid_2"><a id="zindepdispo" class="button blue" href="#">filtrer les  ${zindepdispo} zindeps disponibles</a></div>
+#{else}
+<div class="alpha omega grid_4"><a id="zindepdispo" class="button blue" href="#">filtrer les ${zindepdispo} zindeps
+    disponibles</a></div>
 #{/else}
 
 
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script>
-if($(".disponible").size()>0||$(".atempspartiel").size()>0){
-$("#zindepdispo").click(function () {
-$(".nondisponible").toggle();
-});
-}
-</script>

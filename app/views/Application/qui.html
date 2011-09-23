@@ -1,18 +1,19 @@
 #{extends 'main.html' /}
 #{set title:'Qui' /}
-<div class="grid_6 prefix_2 suffix_4">
+<div class="grid_6 prefix_4 suffix_2">
     <h1>Travaillons ensemble</h1>
 </div>
 
 
-<div class="prefix_2 grid_4">
+<div class="grid_4">
     #{form @search()}
-    <input type="text" name="s" value="" class="searchBox" size="40" placeholder="Recherche par nom ou prénom"/>
+    <input type="text" name="s" value="" class="searchBox" size="25" placeholder="Recherche par nom ou prénom"/>
     #{/form}
     <br/>
+    #{filterZindepsAvailable listOfZindeps:listOfZindeps /}
 </div>
 
-<div class="grid_8 prefix_2">
+<div class="grid_8">
 
     <table class="zindepTable">
         #{list items:listOfZindeps, as:'indep'}
@@ -20,7 +21,8 @@
         <TR>
             &nbsp;
             #{/if}
-            <td class="${indep.currentAvailability.removeWhiteSpaces()}">#{a @showProfile(indep.id,indep.firstName,indep.lastName)}
+            <td class="${indep.currentAvailability.removeWhiteSpaces()}">#{a
+                @showProfile(indep.id,indep.firstName,indep.lastName)}
                 #{if indep.pictureUrl && indep.pictureUrl!='undefined'}
                 <img src="${indep.pictureUrl}"
                      alt="${indep.firstName} ${indep.lastName}"
@@ -42,9 +44,15 @@
     </table>
 
 </div>
-#{filterZindepsAvailable listOfZindeps:listOfZindeps /}
 
 
 <div class="clear">&nbsp;</div>
 
-
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+    if ($(".disponible").size() > 0 || $(".atempspartiel").size() > 0) {
+        $("#zindepdispo").click(function () {
+            $(".nondisponible").toggle();
+        });
+    }
+</script>

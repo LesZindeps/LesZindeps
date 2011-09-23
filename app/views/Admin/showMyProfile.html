@@ -122,7 +122,7 @@
     </p>
     #{/}
 
-        #{field 'zindep.twitter'}
+    #{field 'zindep.twitter'}
     <p>
         <label>Votre compte twitter :</label>
         <input type="text" id="${field.id}" name="${field.name}" value="${field.value}"
@@ -166,11 +166,12 @@
     <p>
         <label>Disponibilit&eacute; :</label>
 
-         #{select field.name, value:field.value, id:field.id,  class:field.errorClass}
-            #{list models.Zindep.Availability.values(), as:'availability'}
-                <option value="${availability.name()}" ${field.value.equals(availability) ? 'selected' : ''} >${availability}</option>
-            #{/list}
-         #{/select}
+        #{select field.name, value:field.value, id:field.id, class:field.errorClass}
+        #{list models.Zindep.Availability.values(), as:'availability'}
+        <option value="${availability.name()}"
+        ${field.value.equals(availability) ? 'selected' : ''} >${availability}</option>
+        #{/list}
+        #{/select}
 
         Votre disponibilit&eacute; sera affich&eacute;e sur votre profil public
         <span class="error">${field.error}</span><br/>
@@ -180,13 +181,13 @@
 
 <script type="text/javascript" charset="utf-8">
     $("#zindep_memberSince").datepicker(
-    {dateFormat:'dd/mm/yy', showAnim:'fadeIn',
-    dayNamesMin:["Di","Lu","Ma","Me","Je","Ve","Sa"],
-    firstDay:'1'}
+            {dateFormat:'dd/mm/yy', showAnim:'fadeIn',
+                dayNamesMin:["Di","Lu","Ma","Me","Je","Ve","Sa"],
+                firstDay:'1'}
     )
 </script>
 
-<input class="button green" type="submit" value="Enregistrer"/>
+<input id="submitProfile" class="button green" type="submit" value="Enregistrer"/>
 #{/form}
 
 

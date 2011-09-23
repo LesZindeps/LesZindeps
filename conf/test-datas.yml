@@ -70,15 +70,15 @@ Zindep(z2):
  pictureUrl: http://media.linkedin.com/mpr/mprx/0_8GEYKguuNrz4JQn-a5VTKOgfZlrsJLc-G8Y3K0aObNXE6Tht2XstOxsrn0K5sG9OT3e8xZyEgQ71
 
 Zindep(z3):
- email: pierre2@test.fr
- firstName: Patrick
- lastName: Test2
+ email: jimi@hendrix.com
+ firstName: jimi
+ lastName: hendrix
  memberSince: 02/04/2010
- location: Marseille
- techno: Spring,Portlet,J2EE,Architecture,Finance de marché
+ location: Seattle
+ techno: voodoo chile, fender stratocaster, riff,
  bio: Exemple de bio 2
- isVisible: false
- pictureUrl: https://lh5.googleusercontent.com/-olv_lombZY4/AAAAAAAAAAI/AAAAAAAAA9M/vg7fEsT4yRI/s96-c/photo.jpg
+ isVisible: true
+ pictureUrl: http://imstars.aufeminin.com/stars/fan/jimi-hendrix/jimi-hendrix-20090419-505284_V96.jpg
 
 Zindep(z4):
  email: Christophe@test.fr
@@ -90,7 +90,7 @@ Zindep(z4):
  bio: Exemple de bio 3
  pictureUrl: http://blog.paumard.org/images/my-apple.jpg
 
- Zindep(z5):
+Zindep(z5):
  email: hlassiege@cccc.com
  firstName: Hugo
  lastName: Lassiege
@@ -101,7 +101,7 @@ Zindep(z4):
  pictureUrl: http://media.linkedin.com/mpr/mprx/0_hTReA02iQqGcJd8A8h4BAySmkAlUJuAAC8fcAy2tUq5w6H6lubIkxpZyExAkswrj3CJnOROpv1kM
 
 
- Zindep(z6):
+Zindep(z6):
  email: damien.gouyette@xxxxx.com
  firstName: Damien
  lastName: GOUYETTE
@@ -110,9 +110,11 @@ Zindep(z4):
  techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
  bio: Exemple de bio 3
  pictureUrl: http://fr.gravatar.com/userimage/3058211/12200b7206a24bd9e4d9b53cdcb9eb4f.png
+ currentAvailability: AVAILABLE
+ isVisible: true
 
- Zindep(z7):
- email: charles.gay@xxxx.com
+Zindep(z7):
+ email: charles.gay@gmail.com
  firstName: Charles
  lastName: GAY
  memberSince: 17/01/2009
@@ -121,6 +123,20 @@ Zindep(z4):
  bio: Exemple de bio 3
  isVisible: true
  pictureUrl: http://media03.linkedin.com/mpr/mpr/shrink_80_80/p/3/000/000/29d/1443143.jpg
+ currentAvailability: PART_TIME_ONLY
+
+
+ Zindep(z8):
+ email: syd@barrett.com
+ firstName: Syd
+ lastName: Barrett
+ memberSince: 17/01/1973
+ location: Paradise
+ techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
+ bio: Exemple de bio 8
+ isVisible: true
+ pictureUrl: http://bestuff.com/images/images_of_stuff/64x64crop/syd-barrett-13010.jpg
+ currentAvailability: PART_TIME_ONLY
 
 Propal(p1):
  title: Architecte super mega trop cool qui roxxe des courges
