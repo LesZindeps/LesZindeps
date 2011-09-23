@@ -58,7 +58,6 @@ public class Application extends Controller {
     public static void qui() {
         List<Zindep> listOfZindeps = Zindep.findAllVisibleByName();
         Collections.shuffle(listOfZindeps);
-        
         render(listOfZindeps);
     }
 
