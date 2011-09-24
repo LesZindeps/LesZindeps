@@ -189,7 +189,7 @@ Propal(p6):
  localisation: Ile de France
  tjm: 700
  contact: toto@test.fr
- phone: 0606060606
+ phone: 0660541209
  nbDaysOfValidity: 30
 
 Propal(p7):
@@ -230,46 +230,46 @@ Propal(p10):
 
 Mission(m1):
  zindep: z1
- title: Architecte  
- role: Architecte
+ title: testeur
+ role: testeur
  initialDate: 10/01/2010
  endDate: 10/05/2010
  clientPrice: 500
- intermediaryPrice: 600
+ intermediaryPrice: 630
  customer: SG
  intermediary: SOAT
  comment: une mission comme les autres
- location: Ile de France
+ location: Tours
  country: France
  exp: 8
  
 Mission(m2):
  zindep: z4
- title: Architecte  
- role: Architecte
+ title: developpeur
+ role: developpeur
  initialDate: 10/01/2010
  endDate: 10/05/2010
- clientPrice: 500
- intermediaryPrice: 600
+ clientPrice: 390
+ intermediaryPrice: 480
  customer: SG
  intermediary: SOAT
  comment: une mission comme les autres
- location: Ile de France
- country: France
+ location: Geneve
+ country: Suisse
  exp: 8
  
 Mission(m3):
  zindep: z3
- title: Architecte  
- role: Architecte
+ title: chef de projet technique
+ role: scrum master
  initialDate: 10/01/2010
- endDate: 10/05/2010
- clientPrice: 500
+ endDate: 10/05/2009
+ clientPrice: 530
  intermediaryPrice: 600
- customer: SG
- intermediary: SOAT
+ customer: Sungard
+ intermediary: Arolla
  comment: une mission comme les autres
- location: Ile de France
+ location: Cergy
  country: France
  exp: 8
 
@@ -277,13 +277,13 @@ Mission(m4):
  zindep: z2
  title: Architecte  
  role: Architecte
- initialDate: 10/01/2010
+ initialDate: 10/01/2008
  endDate: 10/05/2010
- clientPrice: 500
- intermediaryPrice: 600
+ clientPrice: 540
+ intermediaryPrice: 540
  customer: SG
  intermediary: SOAT
- comment: une mission comme les autres
+ comment: une mission pas comme les autres
  location: Ile de France
  country: France
  exp: 8
@@ -294,10 +294,10 @@ Mission(m5):
  role: Architecte
  initialDate: 10/01/2010
  endDate: 10/05/2010
- clientPrice: 500
- intermediaryPrice: 600
- customer: SG
- intermediary: SOAT
+ clientPrice: 504
+ intermediaryPrice: 620
+ customer: BNP Paribas
+ intermediary: OSIATIS
  comment: une mission comme les autres
  location: Ile de France
  country: France
