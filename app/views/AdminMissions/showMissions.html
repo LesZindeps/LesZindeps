@@ -3,69 +3,69 @@
 
 
 <script type="text/javascript">
-<!--
+    <!--
 
-function showDetails(missionId)
-{
-    $( "#"+missionId ).dialog({ minWidth: 600 });
-    return false;
-}
+    function showDetails(missionId) {
+        $("#" + missionId).dialog({ minWidth: 600 });
+        return false;
+    }
 
-$(document).ready(function() {
-	$(".linkDetails").click(function(){
-	    var dataid = $(this).attr("dataid");
-	    showDetails('missionDetails_'+dataid);
-	    return false;
-	});
-});
+    $(document).ready(function() {
+        $(".linkDetails").click(function() {
+            var dataid = $(this).attr("dataid");
+            showDetails('missionDetails_' + dataid);
+            return false;
+        });
+    });
 
-//-->
+    //-->
 </script>
 
 <h1>Liste des tarifs de précédentes missions</h1>
-	<div class="successbox">
-	      Vous pouvez consulter ici les tarifs des zindeps sur des missions précédentes. <br/>
-	      Cette base de tarif peut vous permettre de vous situer mais ne constitue pas une référence fiable.<br/>
-	      Vous pouvez cliquer sur "poste", "Client", "Intermédiaire", et "Lieu" afin d'avoir des statistiques sur les tarifs pour 
-	      un type de mission particulière.     
-	</div>
+<div class="successbox">
+    Vous pouvez consulter ici les tarifs des zindeps sur des missions précédentes. <br/>
+    Cette base de tarif peut vous permettre de vous situer mais ne constitue pas une référence fiable.<br/>
+    Vous pouvez cliquer sur "poste", "Client", "Intermédiaire", et "Lieu" afin d'avoir des statistiques sur les tarifs
+    pour
+    un type de mission particulière.
+</div>
 
 
- #{a @AdminMissions.addMission(),class:'button red'}Ajouter une mission#{/a}
-	#{ifErrors}
-    <div class="errorbox">
-        <h2>Erreur</h2>
-        <ul>
-            #{errors}
-            <li>${error}</li>
-            #{/errors}
-        </ul>
-    </div>
-    #{/ifErrors}
+#{a @AdminMissions.addMission(),class:'button red'}Ajouter une mission#{/a}
+#{ifErrors}
+<div class="errorbox">
+    <h2>Erreur</h2>
+    <ul>
+        #{errors}
+        <li>${error}</li>
+        #{/errors}
+    </ul>
+</div>
+#{/ifErrors}
 
-    #{if flash.error}
-    <div class="errorbox">
-        <h2>${flash.error}</h2>
-    </div>
-    #{/if}
+#{if flash.error}
+<div class="errorbox">
+    <h2>${flash.error}</h2>
+</div>
+#{/if}
 
-    #{if flash.success}
-    <div class="successbox">
-        ${flash.success}
-    </div>
-    #{/if}
+#{if flash.success}
+<div class="successbox">
+    ${flash.success}
+</div>
+#{/if}
 
-<table class="simpleTable" >
+<table class="simpleTable">
     <thead>
     <tr>
-    	<th>Nom</th>
-    	<th>Poste</th>
+        <th>Nom</th>
+        <th>Poste</th>
         <th>Titre</th>
         <th>Votre tarif</th>
         <th>Tarif final</th>
         <th>Client</th>
         <th>Intermédiaire</th>
-        <th>commission(%)</th>
+        <th>commission (%)</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -73,40 +73,48 @@ $(document).ready(function() {
     #{list items:missions, as:'mission'}
     <tr class="${mission_parity}">
 
-		<td>
-			${mission.zindep.firstName} ${mission.zindep.lastName}
-		
-		<div id="missionDetails_${mission.id}" title="${mission.title}" style="display : none;">
-			<p>
-				<span class="infosDetails">Zindep</span> : ${mission.zindep.firstName} ${mission.zindep.lastName} <br/>
-				<span class="infosDetails">Lieu</span> :  <a href="@{AdminMissions.showReport}?region=${mission.location}">${mission.location}</a> / ${mission.country} <br/>
-				<span class="infosDetails">Durée</span> :  ${mission.endDate - mission.initialDate} jours <br/>
-				<span class="infosDetails">Début</span> : ${mission.initialDate} <br/>
-				<span class="infosDetails">Tarif final</span> : ${mission.clientPrice} <br/>
-				<span class="infosDetails">Tarif intermédiaire</span> : ${mission.intermediaryPrice} <br/>
-				<span class="infosDetails">Client</span> : ${mission.customer} <br/>
-				<span class="infosDetails">Intermédiaire</span> :  ${mission.intermediary} <br/>
-				<span class="infosDetails">Expérience au moment du démarrage</span> :  ${mission.exp} <br/>
-			</p> 
-			<fieldset>
-        		<legend>Description</legend>
-				<p>
-				${mission.comment.nl2br()}
-				</p>		
-        	</fieldset>	
-        
-		</div>
-		
-		
-		</td>
-		<td><a href="@{AdminMissions.showReport}?poste=${mission.role}">${mission.role}</a></td>
+        <td>
+            ${mission.zindep.firstName} ${mission.zindep.lastName}
+
+            <div id="missionDetails_${mission.id}" title="${mission.title}" style="display : none;">
+                <p>
+                    <span class="infosDetails">Zindep</span> : ${mission.zindep.firstName} ${mission.zindep.lastName}
+                    <br/>
+                    <span class="infosDetails">Lieu</span> : <a
+                        href="@{AdminMissions.showReport}?region=${mission.location}">${mission.location}</a> /
+                    ${mission.country} <br/>
+                    <span class="infosDetails">Durée</span> : ${mission.endDate - mission.initialDate} jours <br/>
+                    <span class="infosDetails">Début</span> : ${mission.initialDate} <br/>
+                    <span class="infosDetails">Tarif final</span> : ${mission.clientPrice} <br/>
+                    <span class="infosDetails">Tarif intermédiaire</span> : ${mission.intermediaryPrice} <br/>
+                    <span class="infosDetails">Client</span> : ${mission.customer} <br/>
+                    <span class="infosDetails">Intermédiaire</span> : ${mission.intermediary} <br/>
+                    <span class="infosDetails">Expérience au moment du démarrage</span> : ${mission.exp} <br/>
+                </p>
+                <fieldset>
+                    <legend>Description</legend>
+                    <p>
+                        ${mission.comment.nl2br()}
+                    </p>
+                </fieldset>
+
+            </div>
+
+
+        </td>
+        <td><a href="@{AdminMissions.showReport}?poste=${mission.role}">${mission.role}</a></td>
         <td>${mission.title}</td>
         <td>${mission.clientPrice}</td>
         <td>${mission.intermediaryPrice}</td>
         <td><a href="@{AdminMissions.showReport}?customer=${mission.customer}">${mission.customer}</a></td>
         <td><a href="@{AdminMissions.showReport}?intermediary=${mission.intermediary}">${mission.intermediary}</a></td>
         <td>${((mission.intermediaryPrice - mission.clientPrice)/(mission.intermediaryPrice)*100).format('00.00')}</td>
-        <td><a href="#" dataid="${mission.id}" title="Détails" class="linkDetails"><img alt="Détails" src="/public/images/view.gif"/></a>  #{if mission.zindep.id == session.zindepId} #{a @AdminMissions.updateMission(mission.id)}<img alt="Modifier" src="/public/images/edit.png"/>#{/a} #{a @AdminMissions.delMission(mission.id)}<img alt="Supprimer" src="/public/images/trash.gif"/>#{/a}#{/if}</td>
+        <td><a href="#" dataid="${mission.id}" title="Détails" class="linkDetails"><img alt="Détails"
+                                                                                        src="/public/images/view.gif"/></a>
+            #{if mission.zindep.id == session.zindepId} #{a @AdminMissions.updateMission(mission.id)}<img alt="Modifier"
+                                                                                                          src="/public/images/edit.png"/>#{/a}
+            #{a @AdminMissions.delMission(mission.id)}<img alt="Supprimer" src="/public/images/trash.gif"/>#{/a}#{/if}
+        </td>
     </tr>
 
 
