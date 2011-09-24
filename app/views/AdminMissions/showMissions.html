@@ -65,6 +65,7 @@ $(document).ready(function() {
         <th>Tarif final</th>
         <th>Client</th>
         <th>Intermédiaire</th>
+        <th>commission(%)</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -104,6 +105,7 @@ $(document).ready(function() {
         <td>${mission.intermediaryPrice}</td>
         <td><a href="@{AdminMissions.showReport}?customer=${mission.customer}">${mission.customer}</a></td>
         <td><a href="@{AdminMissions.showReport}?intermediary=${mission.intermediary}">${mission.intermediary}</a></td>
+        <td>${((mission.intermediaryPrice - mission.clientPrice)/(mission.intermediaryPrice)*100).format('00.00')}</td>
         <td><a href="#" dataid="${mission.id}" title="Détails" class="linkDetails"><img alt="Détails" src="/public/images/view.gif"/></a>  #{if mission.zindep.id == session.zindepId} #{a @AdminMissions.updateMission(mission.id)}<img alt="Modifier" src="/public/images/edit.png"/>#{/a} #{a @AdminMissions.delMission(mission.id)}<img alt="Supprimer" src="/public/images/trash.gif"/>#{/a}#{/if}</td>
     </tr>
 
