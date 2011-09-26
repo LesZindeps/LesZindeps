@@ -53,6 +53,8 @@
     if ($(".disponible").size() > 0 || $(".atempspartiel").size() > 0) {
         $("#zindepdispo").click(function () {
             $(".nondisponible").toggle();
+            var $checkbox = $(this).find(':checkbox');
+            $checkbox.prop('checked', !$checkbox[0].checked);
         });
     }
 </script>

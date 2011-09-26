@@ -4,11 +4,13 @@
 #{/list}
 
 #{if (zindepdispo)==0}
-<div class="alpha omega grid_4"><a id="zindepdispo" class="button blue" href="#">aucun zindep n'est disponible</a></div>
+<div class="alpha omega grid_4"><a id="zindepdispo" type="checkbox" class="button blue" href="#">aucun zindep n'est
+    disponible</a></div>
 #{/if}
 #{else}
-<div class="alpha omega grid_4"><a id="zindepdispo" class="button blue" href="#">filtrer les ${zindepdispo} zindeps
-    disponibles</a></div>
+<div class="alpha omega grid_4"><a id="zindepdispo" type="checkbox" class="button blue" href="#"><input type="checkbox">filtrer
+    les ${zindepdispo} zindeps
+    disponibles</input></a></div>
 #{/else}
 
 
