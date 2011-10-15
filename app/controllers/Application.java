@@ -26,12 +26,15 @@
 
 package controllers;
 
+import com.google.gson.*;
+import flexjson.JSONSerializer;
 import models.Propal;
 import models.Zindep;
 import notifiers.Mails;
 import play.Logger;
 import play.mvc.*;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +61,15 @@ public class Application extends Controller {
     public static void qui() {
         List<Zindep> listOfZindeps = Zindep.findAllVisibleByName();
         Collections.shuffle(listOfZindeps);
-        render(listOfZindeps);
+        //render(listOfZindeps);
+        JSONSerializer jsonSerializer = new JSONSerializer()
+                                        .include("id","firstName","lastName","title","memberSince","location",
+                                                "bio","techno","pictureUrl","blogUrl","twitter","currentAvailability")
+                                        .exclude("*");
+
+        String listOfZindepsASJSON = jsonSerializer.serialize(listOfZindeps);
+        Scope.Flash.current().put("zindeps",listOfZindepsASJSON);
+        renderTemplate("Application/qui.html", listOfZindeps);
     }
 
 
@@ -94,14 +105,13 @@ public class Application extends Controller {
      * @param s est le critere de recherche.
      */
     public static void search(String s) {
-        if (s == null) {
-            qui();
-        }
-        if (s.trim().equals("")) {
-            qui();
-        }
+       
         List<Zindep> listOfZindeps = Zindep.findByLastNameLike(s);
-        renderTemplate("Application/qui.html", listOfZindeps);
+        JSONSerializer jsonSerializer = new JSONSerializer()
+                                        .include("id","firstName","lastName","title","memberSince","location",
+                                                "bio","techno","pictureUrl","blogUrl","twitter","currentAvailability")
+                                        .exclude("*");
+        renderJSON(jsonSerializer.serialize(listOfZindeps));
     }
 
     /**
@@ -161,4 +171,8 @@ public class Application extends Controller {
         showProfile(id, "", "");
     }
 
+
+
+
+    
 }

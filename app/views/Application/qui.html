@@ -6,41 +6,17 @@
 
 
 <div class="grid_4">
-    #{form @search()}
-    <input type="text" name="s" value="" class="searchBox" size="25" placeholder="Recherche par nom ou prénom"/>
-    #{/form}
+    <form action="/application/search" method="POST" accept-charset="utf-8" enctype="application/x-www-form-urlencoded" id="zindepsearch" onsubmit="return false;">
+    <input type="text" id="search" name="s" value="" class="searchBox" size="25" placeholder="Recherche par nom ou prénom"/>
+    </form>
     <br/>
-    #{filterZindepsAvailable listOfZindeps:listOfZindeps /}
+   <div class="alpha omega grid_4"><a id="zindepdispo" type="checkbox" class="button blue" href="#"></a></div>
 </div>
 
-<div class="grid_8">
+<div id="zindepTableContainer" class="grid_8">
 
-    <table class="zindepTable">
-        #{list items:listOfZindeps, as:'indep'}
-        #{if (indep_index % 5)==1}
-        <TR>
-            &nbsp;
-            #{/if}
-            <td class="${indep.currentAvailability.removeWhiteSpaces()}">#{a
-                @showProfile(indep.id,indep.firstName,indep.lastName)}
-                #{if indep.pictureUrl && indep.pictureUrl!='undefined'}
-                <img src="${indep.pictureUrl}"
-                     alt="${indep.firstName} ${indep.lastName}"
-                     class="zindepPicture"/>
-                #{/if}
-
-                #{/a}<br/>
-                ${indep.firstName} ${indep.lastName}<br/>
-                #{a @showProfile(indep.id,indep.firstName,indep.lastName),class:'button green small'}Profil#{/a}
-                #{if indep.blogUrl && indep.blogUrl!='undefined'}
-                <a href="${indep.blogUrl}" class='button green small' target="_blank">Blog</a>
-                #{/if}
-            </td>
-
-            #{if (indep_index % 5)==0}
-        </TR>
-        #{/if}
-        #{/list}
+    <table id="zindepTable">
+  content
     </table>
 
 </div>
@@ -48,13 +24,158 @@
 
 <div class="clear">&nbsp;</div>
 
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script>
-    if ($(".disponible").size() > 0 || $(".atempspartiel").size() > 0) {
-        $("#zindepdispo").click(function () {
-            $(".nondisponible").toggle();
-            var $checkbox = $(this).find(':checkbox');
-            $checkbox.prop('checked', !$checkbox[0].checked);
-        });
+  <script src="/public/javascripts/underscore.js" type="text/javascript"></script>
+        <script src="/public/javascripts/jquery.js" type="text/javascript"></script>
+    <script src="/public/javascripts/backbone.js" type="text/javascript"></script>
+
+<!-- permet le filtrage des zindeps non disponible -->
+<script type="text/javascript">
+    function display_availability_button(){
+        var zindepDispoCount = $(".AVAILABLE").size() +$(".PART_TIME_ONLY").size();
+        if (zindepDispoCount>0) {
+            $("#zindepdispo").html("<input type='checkbox'>filtrer les "+zindepDispoCount+" zindeps disponibles</input>");
+            $("#zindepdispo").click(function () {
+                $(".NOT_AVAILABLE").toggle();
+                var $checkbox = $(this).find(':checkbox');
+                $checkbox.prop('checked', !$checkbox[0].checked);
+            });
+        }else{
+            $("#zindepdispo").html("aucun zindep n'est disponible");
+        }
     }
 </script>
+
+    <script type="text/template" id="zindepScript">
+        <table id="zindepTable">
+         <% for (var index = 0; index < zindeps.length; index++){ %>
+                <% var zindep = zindeps[index]; %>
+                <% if ((index+1)%5==1){ %>
+                     <TR>&nbsp;
+                <% } %>
+
+            <td class="<%=zindep.currentAvailability%>">
+                <a href="/zindeps/<%=zindep.firstName%>/<%=zindep.lastName%>/<%=zindep.id%>">
+                <img src="<%=zindep.pictureUrl%>"
+                     alt="<%=zindep.firstName%> <%=zindep.lastName%>"
+                     class="zindepPicture"/><br/>
+                </a><%=zindep.firstName%> <%=zindep.lastName%><br/>
+                  <a class="button green small" href="/zindeps/<%=zindep.firstName%>/<%=zindep.lastname%>/<%=zindep.id%>">Profil</a>
+               <% if (zindep.blogUrl){ %>
+                    <a href="<%=zindep.blogUrl%>" class='button green small' target="_blank">Blog</a>
+               <% } %>
+            </td>
+                 <% if ((index+1)%5==0){ %>
+                    </TR>
+                 <% } %>
+         <% } %>
+            </table>
+    </script>
+
+<script type="text/javascript">
+    //activate ECMAScript 5 strict mode if available
+    "use strict";
+  (function($){
+        // Zindep
+        //-------------
+
+
+        var Zindep = Backbone.Model.extend({
+            initialize: function(){
+            //alert("Oh hey! ");
+        },
+          defaults: {
+              id:null,
+              firstName:null,
+              lastName:null,
+              currentAvailability: "Non disponible",
+              pictureUrl : null,
+              blogUrl:'undefined'
+        }
+
+        });
+
+        // Zindeps collection
+        //-------------------
+      var Zindeps = Backbone.Collection.extend({
+          model:Zindep,
+          s:'',
+          url:function() {
+                return this.document.url() + '/zindeps?s='+s;
+            }
+      });
+
+
+        var coll = new Zindeps;
+
+      //initialize collection with JSON from server
+        coll.reset(${flash['zindeps'].raw()});
+        // Zindeps view
+        //-------------------
+        var ZindepView = Backbone.View.extend({
+          el: $("#mainContent"),
+          events: {
+            "submit form":  "updateSearch"
+          },
+          template: _.template($("#zindepScript").html()),
+          initialize: function (args) {
+             //we make sure that this in render, it will always reference to this view
+             this.render = _.bind(this.render, this);
+            
+              coll.bind('change',this.render);
+             coll.bind('add', this.render);
+             coll.bind('remove', this.render);
+              coll.bind('reset', this.render);
+          },
+          updateSearch: function () {
+              var url ="/application/search?s="+$("#search").val();
+              //alert(url);
+           coll.url = url;
+           coll.fetch({
+            success: function(model, resp) {
+               console.log("success="+model.toJSON());
+                
+            },
+            error: function() {
+                console.log("error");
+            } });
+
+          },
+          render: function(){
+              var ti = coll.toJSON();
+              var temp = this.template({ zindeps : ti});
+            $('#zindepTableContainer').html(temp);
+            display_availability_button();
+            return this;
+          }
+
+        });
+        var zindepView = new ZindepView;
+        zindepView.render();
+
+
+        // Zindeps router
+        //-------------------
+        var ZindepsRouter = Backbone.Router.extend({
+          routes: {
+            "!/":             "root",
+            "/application/search":        "zindeps"
+          },
+          root: function() {
+            // Prep the home page and render stuff
+              alert("titi");
+          },
+
+          zindeps: function() {
+            alert("toto");
+          }
+          });
+        // Init the controller like so
+        var zindepsController = new ZindepsRouter;
+
+        //handle back button
+        Backbone.history.start();
+
+    })(jQuery);
+</script>
+
+

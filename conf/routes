@@ -25,14 +25,18 @@
 #
 GET     /                                       Application.index
 
-GET /p/{firstName}/{lastName}/{id} Application.showProfile
+GET     /zindeps/{firstName}/{lastName}/{id}          Application.showProfile
 
-GET /qui            Application.qui
-GET /mission        Application.mission
-POST    /submitMission     Application.submitMission
+GET     /qui                                    Application.qui
+GET     /mission                                Application.mission
+POST    /submitMission                          Application.submitMission
+GET     /zindeps                                Application.search(format:'json')
 
+
+# this url is only available for DEV purpose,
+#to simulate authentication
 %{ if (play.mode.isDev()) { }%
-GET /authenticateas/{userEmail} Admin.authenticateAs
+GET     /authenticateas/{userEmail}             Admin.authenticateAs
 %{ } }%
 
 

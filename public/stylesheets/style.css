@@ -156,7 +156,7 @@ a.selected {
 /* ----------------------------------------------
  * LIST
  * ------------------------------------------- */
-.zindepTable table {
+#zindepTable table {
     width: 100%;
     table-layout: fixed;
     text-align: left;
@@ -165,18 +165,18 @@ a.selected {
     font-size: 12px;
 }
 
-.zindepTable a{
+#zindepTable a{
     text-decoration:none;
 }
 
-.zindepTable td {
+#zindepTable td {
     padding: 15px;
     text-align: center;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Simple Table */
-.simpleTable table {
+#simpleTable table {
     width: 100%;
     table-layout: fixed;
     text-align: left;

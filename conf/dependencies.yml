@@ -1,3 +1,4 @@
 require:
    - play -> playapps 1.4
    - com.google.guava -> guava r09
+   - net.sf.flexjson -> flexjson 2.1
