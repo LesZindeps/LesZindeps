@@ -33,6 +33,12 @@
 # --------------------------------------------------------------------------------------------------------
 # NE SURTOUT PAS stocker dans ce fichier vos vrais emails et votre linkedInId qui doivent rester secret
 # --------------------------------------------------------------------------------------------------------
+
+#
+# ATTENTION: l'indentation des attributs par rapport à l'identifiant de l'objet est primordiale pour éviter
+#            que des zindeps ne soient pas chargés sans explications......(pas de warning au chargement)
+
+
 #zindep visible, mais sans photo. son champ isVisible sera donc a false en base via bootstrap
 Zindep(z0):
  email: pierre@letesteur.fr
@@ -45,6 +51,7 @@ Zindep(z0):
  isVisible: true
  emailBackup: emailbackup@letesteur.fr
 
+#est visible
 Zindep(z1):
  email: nmartignole@xxxxx.com
  firstName: Nicolas
@@ -56,7 +63,8 @@ Zindep(z1):
  isVisible: true
  blogUrl: http://www.touilleur-express.fr/
  pictureUrl: http://media.linkedin.com/mpr/mprx/0_-vl8EBrjrIhgK-YHrn30Eqi1rwQtKlmHKN50EqACfmtC7zMeYPTuXN5uOL6S1n7X1nPY5Pfgv14Y
-
+ 
+#est visible
 Zindep(z2):
  email: louis.gueye@xxxxx.com
  firstName: Jacques
@@ -69,6 +77,7 @@ Zindep(z2):
  blogUrl: http://deepintojee.wordpress.com/
  pictureUrl: http://media.linkedin.com/mpr/mprx/0_8GEYKguuNrz4JQn-a5VTKOgfZlrsJLc-G8Y3K0aObNXE6Tht2XstOxsrn0K5sG9OT3e8xZyEgQ71
 
+#est visible mais pas disponible
 Zindep(z3):
  email: jimi@hendrix.com
  firstName: jimi
@@ -80,6 +89,7 @@ Zindep(z3):
  isVisible: true
  pictureUrl: http://imstars.aufeminin.com/stars/fan/jimi-hendrix/jimi-hendrix-20090419-505284_V96.jpg
 
+#pas visible car isvisible pas renseigné donc à false et pas disponible
 Zindep(z4):
  email: Christophe@test.fr
  firstName: Christophe
@@ -90,6 +100,7 @@ Zindep(z4):
  bio: Exemple de bio 3
  pictureUrl: http://blog.paumard.org/images/my-apple.jpg
 
+#pas visible car isvisible pas renseigné donc à false et pas disponible
 Zindep(z5):
  email: hlassiege@cccc.com
  firstName: Hugo
@@ -100,7 +111,7 @@ Zindep(z5):
  bio: Exemple de bio 3
  pictureUrl: http://media.linkedin.com/mpr/mprx/0_hTReA02iQqGcJd8A8h4BAySmkAlUJuAAC8fcAy2tUq5w6H6lubIkxpZyExAkswrj3CJnOROpv1kM
 
-
+#est visible mais pas disponible
 Zindep(z6):
  email: damien.gouyette@xxxxx.com
  firstName: Damien
@@ -113,6 +124,7 @@ Zindep(z6):
  currentAvailability: AVAILABLE
  isVisible: true
 
+#est visible et disponible
 Zindep(z7):
  email: charles.gay@xxxxx.com
  firstName: Charles
@@ -123,20 +135,34 @@ Zindep(z7):
  bio: Exemple de bio 4
  isVisible: true
  pictureUrl: http://media03.linkedin.com/mpr/mpr/shrink_80_80/p/3/000/000/29d/1443143.jpg
- currentAvailability: PART_TIME_ONLY
+ currentAvailability: AVAILABLE
 
-
- Zindep(z8):
+#est visible et disponible
+Zindep(z8):
  email: syd@barrett.com
  firstName: Syd
  lastName: Barrett
  memberSince: 17/01/1973
  location: Paradise
- techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
+ techno: pink floyd
  bio: Exemple de bio 8
  isVisible: true
  pictureUrl: http://bestuff.com/images/images_of_stuff/64x64crop/syd-barrett-13010.jpg
  currentAvailability: PART_TIME_ONLY
+
+#est visible et non disponible
+Zindep(z9):
+ email: mark@knopfler.com
+ firstName: mark
+ lastName: Knopfler
+ memberSince: 17/11/1974
+ location: concert
+ techno: gibson les paul
+ bio: Exemple de bio 9
+ isVisible: true
+ pictureUrl: http://csimg.webmarchand.com/srv/FR/28013756132901980/T/340x340/C/FFFFFF/url/mark-knopfler-dire-straits.jpg
+currentAvailability: AVAILABLE
+
 
 Propal(p1):
  title: Architecte super mega trop cool qui roxxe des courges
