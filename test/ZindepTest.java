@@ -27,10 +27,10 @@ public class ZindepTest extends UnitTest {
 
     @Test
     public void shouldReturns4ZindepForFindAllVisibleByName() {
-        // the default is false
+
         List<Zindep> result = Zindep.findAllVisibleByName();
         assertNotNull(result);
-        assertEquals(6, result.size());
+        assertEquals(8, result.size());
     }
 
     @Test
