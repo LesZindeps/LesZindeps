@@ -42,23 +42,34 @@ import java.util.List;
 public class Bootstrap extends Job {
 
     public void doJob() {
-        if (Play.mode == Play.Mode.DEV ) {
+        if (Play.mode == Play.Mode.DEV) {
             //before tests run,we load each time the database to isolate them
             //without that, weirdly, Zindep.count return 0 but there is a conflict in the database (data already exist)
             if (Zindep.count() == 0 && !Play.runingInTestMode()) {
+                Logger.debug("loading test-datas.yml");
                 Fixtures.loadModels("test-datas.yml");
             }
         }
 
+        //availability is a required field
+        List<Zindep> zindeps = Zindep.findAll();
+        for (Zindep zindep : zindeps) {
+            Logger.debug("check " + zindep.email + " with availability=" + zindep.currentAvailability);
+            if (zindep.currentAvailability == null) {
+                Logger.debug("zindep " + zindep.email + " hasn't got any availability");
+                zindep.currentAvailability = Zindep.Availability.NOT_AVAILABLE;
+                zindep.save();
+            }
+        }
         //set to isVisible to false, when Zindep hasn't got any pictureUrl
         //useful to run only ONCE, because each Zindep update will check that pictureUrl is present
         List<Zindep> zindepsWithoutPictureUrl = Zindep.find(" pictureUrl IS NULL and isVisible = TRUE ").fetch();
-        for(Zindep zindep : zindepsWithoutPictureUrl){
+        for (Zindep zindep : zindepsWithoutPictureUrl) {
             zindep.isVisible = false;
             zindep.save();
         }
 
-        
+
     }
 
 }
