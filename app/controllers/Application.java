@@ -30,7 +30,7 @@ import models.Propal;
 import models.Zindep;
 import notifiers.Mails;
 import play.Logger;
-import play.mvc.*;
+import play.mvc.Controller;
 
 import java.util.Collections;
 import java.util.Date;
@@ -57,6 +57,10 @@ public class Application extends Controller {
      */
     public static void qui() {
         List<Zindep> listOfZindeps = Zindep.findAllVisibleByName();
+        Logger.debug("qui=" + listOfZindeps.size() + " zindeps");
+        for (Zindep zindep : listOfZindeps) {
+            Logger.debug("zindep visible=" + zindep.email + " and available=" + zindep.currentAvailability);
+        }
         Collections.shuffle(listOfZindeps);
         render(listOfZindeps);
     }
