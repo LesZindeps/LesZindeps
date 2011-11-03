@@ -52,7 +52,7 @@ public class Zindep extends GenericModel {
     public static enum Availability {
         NOT_AVAILABLE("Non disponible"),
         PART_TIME_ONLY("A temps partiel"),
-        AVAILABLE("Disponible");
+        AVAILABLE("A temps complet");
 
         private String label;
 
