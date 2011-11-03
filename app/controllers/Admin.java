@@ -28,7 +28,6 @@ package controllers;
 
 import models.Propal;
 import models.Zindep;
-import play.Logger;
 import play.libs.OpenID;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -113,6 +112,7 @@ public class Admin extends Controller {
 
     /**
      * this authentication bypass is only available in DEV mode
+     *
      * @param userEmail
      */
     public static void authenticateAs(String userEmail) {
@@ -168,7 +168,7 @@ public class Admin extends Controller {
      */
     public static void doUpdateMyProfile(Zindep zindep) {
         checkAuthenticity(); // See http://www.playframework.org/documentation/1.1.1/releasenotes-1.0.2 
-        String id = session.get("zindepId"); 
+        String id = session.get("zindepId");
         if (id == null) {
             error("Probleme avec l'authentification");
         }
@@ -194,13 +194,14 @@ public class Admin extends Controller {
         validation.email(zindep.emailBackup);
         validation.url(zindep.pictureUrl);
         validation.required(zindep.pictureUrl);
+        validation.required(zindep.currentAvailability);
 
 
         Zindep existing = Zindep.findById(id);
         if (existing == null) {
             flash.error("Utilisateur non trouvé");
             index();
-        } 
+        }
 
         // L'email n'est pas repassé à la page d'édition
         // c'est la clé fonctionnelle. Donc on la recopie.

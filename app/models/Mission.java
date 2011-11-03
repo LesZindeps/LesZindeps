@@ -26,33 +26,23 @@
 
 package models;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Query;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import play.data.validation.MaxSize;
 import play.data.validation.Min;
 import play.data.validation.Required;
-import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
-import play.db.jpa.JPABase;
 import play.db.jpa.Model;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Correspond aux anciennes missions réalisées par les Zindeps
  */
 @Entity
 public class Mission extends Model {
+    public static final int PERCENTAGE_SCALE = 2;
     @ManyToOne
     public Zindep zindep;
 
@@ -188,5 +178,19 @@ public class Mission extends Model {
                 .setParameter("region", region)
                 .setParameter("region", region);
         return query.getResultList();
+    }
+
+    public String getIntermediaryCommission() {
+        BigDecimal intermediaryCommission = new BigDecimal(0);
+        intermediaryCommission.setScale(PERCENTAGE_SCALE);
+        if (intermediaryPrice != null && intermediaryPrice.longValue() != 0) {
+            BigDecimal intermediaryCommissionValue = new BigDecimal(intermediaryPrice - clientPrice);
+            BigDecimal divisor = new BigDecimal(intermediaryPrice);
+            intermediaryCommission = intermediaryCommissionValue.divide(divisor, PERCENTAGE_SCALE, BigDecimal.ROUND_HALF_UP);
+            intermediaryCommission = intermediaryCommission.multiply(new BigDecimal(100));
+        }
+
+        return intermediaryCommission.toPlainString();
+
     }
 }

@@ -108,7 +108,7 @@
         <td>${mission.intermediaryPrice}</td>
         <td><a href="@{AdminMissions.showReport}?customer=${mission.customer}">${mission.customer}</a></td>
         <td><a href="@{AdminMissions.showReport}?intermediary=${mission.intermediary}">${mission.intermediary}</a></td>
-        <td>${((mission.intermediaryPrice - mission.clientPrice)/(mission.intermediaryPrice)*100).format('00.00')}</td>
+        <td>${(mission.intermediaryCommission)}</td>
         <td><a href="#" dataid="${mission.id}" title="Détails" class="linkDetails"><img alt="Détails"
                                                                                         src="/public/images/view.gif"/></a>
             #{if mission.zindep.id == session.zindepId} #{a @AdminMissions.updateMission(mission.id)}<img alt="Modifier"
