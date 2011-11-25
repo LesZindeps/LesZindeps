@@ -31,8 +31,6 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
 
-import java.util.List;
-
 /**
  * Le bootstrap est execute en mode dev au demarrage pour placer quelques utilisateurs en base.
  *
@@ -49,24 +47,6 @@ public class Bootstrap extends Job {
                 Logger.debug("loading test-datas.yml");
                 Fixtures.loadModels("test-datas.yml");
             }
-        }
-
-        //availability is a required field
-        List<Zindep> zindeps = Zindep.findAll();
-        for (Zindep zindep : zindeps) {
-            Logger.debug("check " + zindep.email + " with availability=" + zindep.currentAvailability);
-            if (zindep.currentAvailability == null) {
-                Logger.debug("zindep " + zindep.email + " hasn't got any availability");
-                zindep.currentAvailability = Zindep.Availability.NOT_AVAILABLE;
-                zindep.save();
-            }
-        }
-        //set to isVisible to false, when Zindep hasn't got any pictureUrl
-        //useful to run only ONCE, because each Zindep update will check that pictureUrl is present
-        List<Zindep> zindepsWithoutPictureUrl = Zindep.find(" pictureUrl IS NULL and isVisible = TRUE ").fetch();
-        for (Zindep zindep : zindepsWithoutPictureUrl) {
-            zindep.isVisible = false;
-            zindep.save();
         }
 
 
