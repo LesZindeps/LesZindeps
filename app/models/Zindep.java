@@ -32,11 +32,12 @@ import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.data.validation.URL;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
+import play.mvc.Router;
 import play.templates.JavaExtensions;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Un Zindep comme son nom l'indique est une espece rare et protegee qui represente un independant.
@@ -48,11 +49,12 @@ import java.util.List;
 public class Zindep extends GenericModel {
 
     public static final String UNDEFINED = "undefined";
+    public static final String URL_SEPARATOR = "::";
 
     public static enum Availability {
         NOT_AVAILABLE("Non disponible"),
         PART_TIME_ONLY("A temps partiel"),
-        AVAILABLE("A temps complet");
+        FULL_TIME("A temps complet");
 
         private String label;
 
@@ -73,8 +75,8 @@ public class Zindep extends GenericModel {
         public String removeWhiteSpaces() {
             return label.replace(" ", "").toLowerCase();
         }
-    }
 
+    }
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -92,6 +94,8 @@ public class Zindep extends GenericModel {
     @Required(message = "Ce champ est obligatoire")
     @MaxSize(255)
     public String lastName;
+
+    private Date updateDate;
 
     public String title;
 
@@ -140,6 +144,7 @@ public class Zindep extends GenericModel {
     @Required(message = "la disponibilité doit être définie")
     @Enumerated(EnumType.STRING)
     public Availability currentAvailability;
+
 
 
     @Override
@@ -204,6 +209,8 @@ public class Zindep extends GenericModel {
         if (memberSince == null) {
             memberSince = new Date();
         }
+        
+        this.updateDate = new Date();
     }
 
     /**
@@ -239,4 +246,48 @@ public class Zindep extends GenericModel {
     public static List<Zindep> findAllByName() {
         return Zindep.find("from Zindep z order by z.lastName").fetch();
     }
+
+    /**
+     * Retourne la liste trié par date de modification des Zindeps suivant leur statut.
+     * @return une liste triée ou vide... si un jour tous les zindeps venait à disparaitre ou a rendre leur profil invisible ;).
+     */
+    public static List<Zindep> findAllByAvailability(Availability availability) {
+        return Zindep.find("from Zindep z where z.currentAvailability =:currentAvailability order by z.updateDate desc")
+                .bind("currentAvailability", availability).fetch();
+    }
+
+    public void setCurrentAvailability(Availability currentAvailability) {
+        if(this.currentAvailability!=null &&!this.currentAvailability.equals(currentAvailability)){
+            ZindepAvailabilitiesEntry entry = new ZindepAvailabilitiesEntry();
+            entry.currentAvailability = currentAvailability;
+            entry.previousAvailability = this.currentAvailability;
+            entry.updateDate = new Date();
+            entry.lastZindepModifiedURL = getProfileUrl();
+            entry.zindepsWithAFullTimeAvailability = getZindepProfiles(Availability.FULL_TIME);
+            entry.zindepsWithAPartTimeAvailability = getZindepProfiles(Availability.PART_TIME_ONLY);
+            entry.save();
+        }
+        this.currentAvailability = currentAvailability;
+    }
+
+    private static String getZindepProfiles(Availability availability) {
+        List<Zindep> zindepsAvailable = findAllByAvailability(availability);
+        StringBuilder  fullTimeUrls = new StringBuilder();
+        for(Zindep zindep : zindepsAvailable){
+            fullTimeUrls.append(zindep.getProfileUrl());
+            fullTimeUrls.append(URL_SEPARATOR);
+        }
+        return fullTimeUrls.toString();
+    }
+
+    private String getProfileUrl() {
+        Map<String,Object> params = new HashMap<String, Object>();
+        params.put("id",id);
+        params.put("firstName",firstName);
+        params.put("lastName",lastName);
+        return Router.reverse("Application.showProfile", params).url;
+    }
+
+
+
 }

@@ -171,15 +171,18 @@ public class Admin extends Controller {
         String id = session.get("zindepId");
         if (id == null) {
             error("Probleme avec l'authentification");
+            return;
         }
         if (zindep.id == null) {
             flash.error("Impossible de mettre à jour votre profil.");
             showMyProfile();
+            return;
         }
 
         if (!id.equals(zindep.id)) {
             flash.error("Vous ne pouvez mettre à jour que votre propre profil");
             showMyProfile();
+            return;
         }
 
         // Validation rules
@@ -201,6 +204,7 @@ public class Admin extends Controller {
         if (existing == null) {
             flash.error("Utilisateur non trouvé");
             index();
+            return;
         }
 
         // L'email n'est pas repassé à la page d'édition
@@ -211,6 +215,7 @@ public class Admin extends Controller {
         validation.valid(zindep);
         if (validation.hasErrors()) {
             render("@showMyProfile", zindep);
+            return;
         }
 
         // Avec Play lorsque l'on passe une entité Zindep à une action, et qu'il y a
