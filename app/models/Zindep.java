@@ -32,12 +32,14 @@ import play.data.validation.MaxSize;
 import play.data.validation.Required;
 import play.data.validation.URL;
 import play.db.jpa.GenericModel;
-import play.db.jpa.JPABase;
 import play.mvc.Router;
 import play.templates.JavaExtensions;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Un Zindep comme son nom l'indique est une espece rare et protegee qui represente un independant.
@@ -77,6 +79,7 @@ public class Zindep extends GenericModel {
         }
 
     }
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -146,7 +149,6 @@ public class Zindep extends GenericModel {
     public Availability currentAvailability;
 
 
-
     @Override
     public String toString() {
         return "Zindep {" +
@@ -209,7 +211,7 @@ public class Zindep extends GenericModel {
         if (memberSince == null) {
             memberSince = new Date();
         }
-        
+
         this.updateDate = new Date();
     }
 
@@ -249,7 +251,9 @@ public class Zindep extends GenericModel {
 
     /**
      * Retourne la liste trié par date de modification des Zindeps suivant leur statut.
-     * @return une liste triée ou vide... si un jour tous les zindeps venait à disparaitre ou a rendre leur profil invisible ;).
+     *
+     * @param availability
+     * @return une liste triée ou vide...
      */
     public static List<Zindep> findAllByAvailability(Availability availability) {
         return Zindep.find("from Zindep z where z.currentAvailability =:currentAvailability order by z.updateDate desc")
@@ -257,7 +261,7 @@ public class Zindep extends GenericModel {
     }
 
     public void setCurrentAvailability(Availability currentAvailability) {
-        if(this.currentAvailability!=null &&!this.currentAvailability.equals(currentAvailability)){
+        if (this.currentAvailability != null && !this.currentAvailability.equals(currentAvailability)) {
             ZindepAvailabilitiesEntry entry = new ZindepAvailabilitiesEntry();
             entry.currentAvailability = currentAvailability;
             entry.previousAvailability = this.currentAvailability;
@@ -272,8 +276,8 @@ public class Zindep extends GenericModel {
 
     private static String getZindepProfiles(Availability availability) {
         List<Zindep> zindepsAvailable = findAllByAvailability(availability);
-        StringBuilder  fullTimeUrls = new StringBuilder();
-        for(Zindep zindep : zindepsAvailable){
+        StringBuilder fullTimeUrls = new StringBuilder();
+        for (Zindep zindep : zindepsAvailable) {
             fullTimeUrls.append(zindep.getProfileUrl());
             fullTimeUrls.append(URL_SEPARATOR);
         }
@@ -281,13 +285,12 @@ public class Zindep extends GenericModel {
     }
 
     private String getProfileUrl() {
-        Map<String,Object> params = new HashMap<String, Object>();
-        params.put("id",id);
-        params.put("firstName",firstName);
-        params.put("lastName",lastName);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", id);
+        params.put("firstName", firstName);
+        params.put("lastName", lastName);
         return Router.reverse("Application.showProfile", params).url;
     }
-
 
 
 }
