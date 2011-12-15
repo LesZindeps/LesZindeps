@@ -121,7 +121,7 @@ Zindep(z6):
  techno: Assurance,Spring,J2EE,JEE5,JEE6,Agile,Scrum,Apache Camel,Lucene,Velocity,Tomcat
  bio: Exemple de bio 3
  pictureUrl: http://fr.gravatar.com/userimage/3058211/12200b7206a24bd9e4d9b53cdcb9eb4f.png
- currentAvailability: AVAILABLE
+ currentAvailability: FULL_TIME
  isVisible: true
 
 #est visible et disponible
@@ -135,7 +135,7 @@ Zindep(z7):
  bio: Exemple de bio 4
  isVisible: true
  pictureUrl: http://media03.linkedin.com/mpr/mpr/shrink_80_80/p/3/000/000/29d/1443143.jpg
- currentAvailability: AVAILABLE
+ currentAvailability: FULL_TIME
 
 #est visible et disponible
 Zindep(z8):
@@ -161,7 +161,7 @@ Zindep(z9):
  bio: Exemple de bio 9
  isVisible: true
  pictureUrl: http://csimg.webmarchand.com/srv/FR/28013756132901980/T/340x340/C/FFFFFF/url/mark-knopfler-dire-straits.jpg
-currentAvailability: AVAILABLE
+ currentAvailability: FULL_TIME
 
 
 Propal(p1):

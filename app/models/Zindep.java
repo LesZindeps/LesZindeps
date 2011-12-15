@@ -274,7 +274,7 @@ public class Zindep extends GenericModel {
         this.currentAvailability = currentAvailability;
     }
 
-    private static String getZindepProfiles(Availability availability) {
+    public static String getZindepProfiles(Availability availability) {
         List<Zindep> zindepsAvailable = findAllByAvailability(availability);
         StringBuilder fullTimeUrls = new StringBuilder();
         for (Zindep zindep : zindepsAvailable) {

@@ -7,6 +7,8 @@ import play.test.UnitTest;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+
 /**
  * Exemple de test unitaire... libre à vous de compléter.
  */
@@ -54,6 +56,22 @@ public class ZindepTest extends UnitTest {
         assertNotNull(result3);
         assertEquals("Pierre", result3.firstName);
         assertEquals("Letesteur", result3.lastName);
+    }
+
+
+    @Test
+    public void testFindAllByAvailability() {
+
+        List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(6));
+
+        List<Zindep> zindepsPartTimeOnly = Zindep.findAllByAvailability(Zindep.Availability.PART_TIME_ONLY);
+        assertThat(zindepsPartTimeOnly.size(), is(1));
+
+        List<Zindep> zindepsFullTime = Zindep.findAllByAvailability(Zindep.Availability.FULL_TIME);
+        assertThat(zindepsFullTime.size(), is(3));
+
+
     }
 
 
