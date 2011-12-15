@@ -74,5 +74,34 @@ public class ZindepTest extends UnitTest {
 
     }
 
+    @Test
+    public void testFindAllByAvailability_with_a_change_from_NOT_AVAILABLE_TO_AVAILABLE() {
+
+        List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(6));
+
+        List<Zindep> zindepsPartTimeOnly = Zindep.findAllByAvailability(Zindep.Availability.PART_TIME_ONLY);
+        assertThat(zindepsPartTimeOnly.size(), is(1));
+
+        List<Zindep> zindepsFullTime = Zindep.findAllByAvailability(Zindep.Availability.FULL_TIME);
+        assertThat(zindepsFullTime.size(), is(3));
+
+        //change
+        Zindep zindep = zindepsFullTime.get(0);
+        zindep.setCurrentAvailability(Zindep.Availability.NOT_AVAILABLE);
+        zindep.save();
+
+        //check
+        zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(7));
+
+        zindepsPartTimeOnly = Zindep.findAllByAvailability(Zindep.Availability.PART_TIME_ONLY);
+        assertThat(zindepsPartTimeOnly.size(), is(1));
+
+        zindepsFullTime = Zindep.findAllByAvailability(Zindep.Availability.FULL_TIME);
+        assertThat(zindepsFullTime.size(), is(2));
+
+    }
+
 
 }
