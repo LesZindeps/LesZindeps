@@ -9,9 +9,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 
-/**
- * Exemple de test unitaire... libre à vous de compléter.
- */
+
 public class ZindepTest extends UnitTest {
 
 
@@ -103,5 +101,28 @@ public class ZindepTest extends UnitTest {
 
     }
 
+
+    @Test
+    public void testFindAllByAvailability_with_removal_of_one_zindep() {
+        List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(6));
+        Zindep zindep = zindepsNotAvailable.get(0);
+        zindep.delete();
+        zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(5));
+    }
+
+    @Test
+    public void testFindAllByAvailability_with_addition_of_one_zindep() {
+        List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(6));
+        Zindep zindep = new Zindep();
+        zindep.firstName = "john";
+        zindep.lastName = "lennon";
+        zindep.setCurrentAvailability(Zindep.Availability.NOT_AVAILABLE);
+        zindep.save();
+        zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(7));
+    }
 
 }
