@@ -5,6 +5,7 @@ import org.junit.Test;
 import play.test.Fixtures;
 import play.test.UnitTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -58,7 +59,7 @@ public class ZindepTest extends UnitTest {
 
 
     @Test
-    public void testFindAllByAvailability() {
+    public void testFindAllByAvailability_nominal_case() {
 
         List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
         assertThat(zindepsNotAvailable.size(), is(6));
@@ -123,6 +124,15 @@ public class ZindepTest extends UnitTest {
         zindep.save();
         zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
         assertThat(zindepsNotAvailable.size(), is(7));
+    }
+
+    @Test
+    public void testGetZindepURLProfiles_nominal_case() {
+        String zindepURLProfiles = Zindep.getZindepURLProfiles(Zindep.Availability.NOT_AVAILABLE);
+        List<String> strings = Arrays.asList(zindepURLProfiles.split("::"));
+        assertThat(strings.size(), is(6));
+
+
     }
 
 }

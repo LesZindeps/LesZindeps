@@ -267,14 +267,21 @@ public class Zindep extends GenericModel {
             entry.previousAvailability = this.currentAvailability;
             entry.updateDate = new Date();
             entry.lastZindepModifiedURL = getProfileUrl();
-            entry.zindepsWithAFullTimeAvailability = getZindepProfiles(Availability.FULL_TIME);
-            entry.zindepsWithAPartTimeAvailability = getZindepProfiles(Availability.PART_TIME_ONLY);
+            entry.zindepsWithAFullTimeAvailability = getZindepURLProfiles(Availability.FULL_TIME);
+            entry.zindepsWithAPartTimeAvailability = getZindepURLProfiles(Availability.PART_TIME_ONLY);
             entry.save();
         }
         this.currentAvailability = currentAvailability;
     }
 
-    public static String getZindepProfiles(Availability availability) {
+    /**
+     * retourn la liste d'urls des profiles sous forme de string, suivant la disponibilité passée en paramètre.
+     * le caractère séparateur entre les urls est le double 2 points '::'.
+     *
+     * @param availability
+     * @return
+     */
+    public static String getZindepURLProfiles(Availability availability) {
         List<Zindep> zindepsAvailable = findAllByAvailability(availability);
         StringBuilder fullTimeUrls = new StringBuilder();
         for (Zindep zindep : zindepsAvailable) {
