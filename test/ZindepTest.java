@@ -1,4 +1,5 @@
 import models.Zindep;
+import models.ZindepAvailabilitiesEntry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -131,7 +132,33 @@ public class ZindepTest extends UnitTest {
         String zindepURLProfiles = Zindep.getZindepURLProfiles(Zindep.Availability.NOT_AVAILABLE);
         List<String> strings = Arrays.asList(zindepURLProfiles.split("::"));
         assertThat(strings.size(), is(6));
+    }
 
+    @Test
+    public void testZindepAvailabilitiesEntry_creation() {
+        List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
+        assertThat(zindepsNotAvailable.size(), is(6));
+
+        List<Zindep> zindepsPartTimeOnly = Zindep.findAllByAvailability(Zindep.Availability.PART_TIME_ONLY);
+        assertThat(zindepsPartTimeOnly.size(), is(1));
+
+        List<Zindep> zindepsFullTime = Zindep.findAllByAvailability(Zindep.Availability.FULL_TIME);
+        assertThat(zindepsFullTime.size(), is(3));
+
+        List<ZindepAvailabilitiesEntry> entries = ZindepAvailabilitiesEntry.findAll();
+        assertThat(entries.size(), is(0));
+
+        //change
+        Zindep zindep = zindepsFullTime.get(0);
+        zindep.setCurrentAvailability(Zindep.Availability.NOT_AVAILABLE);
+        zindep.save();
+
+        //check
+        entries = ZindepAvailabilitiesEntry.findAll();
+        assertThat(entries.size(), is(1));
+        ZindepAvailabilitiesEntry entry = entries.get(0);
+        assertThat(entry.currentAvailability, is(Zindep.Availability.NOT_AVAILABLE));
+        assertThat(entry.previousAvailability, is(Zindep.Availability.FULL_TIME));
 
     }
 
