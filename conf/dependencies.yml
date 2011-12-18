@@ -1,3 +1,4 @@
 require:
    - play -> playapps 1.4
    - com.google.guava -> guava r09
+   - rome -> rome 1.0
