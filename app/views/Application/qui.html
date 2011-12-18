@@ -1,46 +1,48 @@
 #{extends 'main.html' /}
 #{set title:'Qui' /}
-<div class="grid_6 prefix_4 suffix_2">
+
+<div class="grird_6 prefix_4 suffix_2">
     <h1>Travaillons ensemble</h1>
 </div>
 
 
 <div class="grid_4">
-    #{form @search()}
+#{form @search()}
     <input type="text" name="s" value="" class="searchBox" size="25" placeholder="Recherche par nom ou prénom"/>
-    #{/form}
+#{/form}
     <br/>
-    #{filterZindepsAvailable listOfZindeps:listOfZindeps /}
+#{filterZindepsAvailable listOfZindeps:listOfZindeps /}
+    <div class="feed"><a type="application/atom+xml" href="/disponibilites">flux des disponibilités</a></div>
 </div>
 
 <div class="grid_8">
 
     <table class="zindepTable">
-        #{list items:listOfZindeps, as:'indep'}
+    #{list items:listOfZindeps, as:'indep'}
         #{if (indep_index % 5)==1}
         <TR>
             &nbsp;
-            #{/if}
-            <td class="${indep.currentAvailability.removeWhiteSpaces()}">#{a
-                @showProfile(indep.id,indep.firstName,indep.lastName)}
-                #{if indep.pictureUrl && indep.pictureUrl!='undefined'}
+        #{/if}
+        <td class="${indep.currentAvailability.removeWhiteSpaces()}">#{a
+        @showProfile(indep.id,indep.firstName,indep.lastName)}
+            #{if indep.pictureUrl && indep.pictureUrl!='undefined'}
                 <img src="${indep.pictureUrl}"
                      alt="${indep.firstName} ${indep.lastName}"
                      class="zindepPicture"/>
-                #{/if}
+            #{/if}
 
-                #{/a}<br/>
-                ${indep.firstName} ${indep.lastName}<br/>
-                #{a @showProfile(indep.id,indep.firstName,indep.lastName),class:'button green small'}Profil#{/a}
-                #{if indep.blogUrl && indep.blogUrl!='undefined'}
+        #{/a}<br/>
+        ${indep.firstName} ${indep.lastName}<br/>
+            #{a @showProfile(indep.id,indep.firstName,indep.lastName),class:'button green small'}Profil#{/a}
+            #{if indep.blogUrl && indep.blogUrl!='undefined'}
                 <a href="${indep.blogUrl}" class='button green small' target="_blank">Blog</a>
-                #{/if}
-            </td>
+            #{/if}
+        </td>
 
-            #{if (indep_index % 5)==0}
+        #{if (indep_index % 5)==0}
         </TR>
         #{/if}
-        #{/list}
+    #{/list}
     </table>
 
 </div>

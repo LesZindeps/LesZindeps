@@ -263,35 +263,37 @@ public class Zindep extends GenericModel {
     public void setCurrentAvailability(Availability currentAvailability) {
         if (this.currentAvailability != null && !this.currentAvailability.equals(currentAvailability)) {
             ZindepAvailabilitiesEntry entry = new ZindepAvailabilitiesEntry();
+            entry.lastZindepModifiedId = id;
             entry.currentAvailability = currentAvailability;
             entry.previousAvailability = this.currentAvailability;
             entry.updateDate = new Date();
-            entry.lastZindepModifiedURL = getProfileUrl();
-            entry.zindepsWithAFullTimeAvailability = getZindepURLProfiles(Availability.FULL_TIME);
-            entry.zindepsWithAPartTimeAvailability = getZindepURLProfiles(Availability.PART_TIME_ONLY);
+            entry.lastZindepModifiedId = getProfileUrl();
+            entry.zindepsFullTime = getZindepIds(Availability.FULL_TIME);
+            entry.zindepsPartTime = getZindepIds(Availability.PART_TIME_ONLY);
+            entry.zindepsNotAvailable = getZindepIds(Availability.NOT_AVAILABLE);
             entry.save();
         }
         this.currentAvailability = currentAvailability;
     }
 
     /**
-     * retourn la liste d'urls des profiles sous forme de string, suivant la disponibilité passée en paramètre.
+     * retourne la liste d'urls des profiles sous forme de string, suivant la disponibilité passée en paramètre.
      * le caractère séparateur entre les urls est le double 2 points '::'.
      *
      * @param availability
      * @return
      */
-    public static String getZindepURLProfiles(Availability availability) {
+    public static String getZindepIds(Availability availability) {
         List<Zindep> zindepsAvailable = findAllByAvailability(availability);
         StringBuilder fullTimeUrls = new StringBuilder();
         for (Zindep zindep : zindepsAvailable) {
-            fullTimeUrls.append(zindep.getProfileUrl());
+            fullTimeUrls.append(zindep.id);
             fullTimeUrls.append(URL_SEPARATOR);
         }
         return fullTimeUrls.toString();
     }
 
-    private String getProfileUrl() {
+    public String getProfileUrl() {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
         params.put("firstName", firstName);

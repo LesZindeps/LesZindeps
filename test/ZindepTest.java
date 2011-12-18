@@ -6,7 +6,6 @@ import org.junit.Test;
 import play.test.Fixtures;
 import play.test.UnitTest;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -127,12 +126,6 @@ public class ZindepTest extends UnitTest {
         assertThat(zindepsNotAvailable.size(), is(7));
     }
 
-    @Test
-    public void testGetZindepURLProfiles_nominal_case() {
-        String zindepURLProfiles = Zindep.getZindepURLProfiles(Zindep.Availability.NOT_AVAILABLE);
-        List<String> strings = Arrays.asList(zindepURLProfiles.split("::"));
-        assertThat(strings.size(), is(6));
-    }
 
     @Test
     public void testZindepAvailabilitiesEntry_creation() {

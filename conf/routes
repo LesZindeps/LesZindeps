@@ -28,9 +28,14 @@ GET     /                                       Application.index
 GET /p/{firstName}/{lastName}/{id} Application.showProfile
 
 GET /qui            Application.qui
+
+#flux atom des disponibilites
+GET /disponibilites       Application.disponibilites(format:'xml')
+
 GET /mission        Application.mission
 POST    /submitMission     Application.submitMission
 
+#permet d'activer le hack pour s'authentifier avec cette url
 %{ if (play.mode.isDev()) { }%
 GET /authenticateas/{userEmail} Admin.authenticateAs
 %{ } }%

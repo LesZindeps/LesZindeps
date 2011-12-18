@@ -26,12 +26,19 @@
 
 package controllers;
 
+import com.sun.syndication.feed.synd.*;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedOutput;
 import models.Propal;
 import models.Zindep;
+import models.ZindepAvailabilitiesEntry;
 import notifiers.Mails;
 import play.Logger;
 import play.mvc.Controller;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +70,61 @@ public class Application extends Controller {
         }
         Collections.shuffle(listOfZindeps);
         render(listOfZindeps);
+    }
+
+
+    public static void disponibilites() {
+        SyndFeed feed = new SyndFeedImpl();
+        feed.setAuthor("Les Zindeps");
+        feed.setFeedType("atom_1.0");
+        feed.setTitle("disponibilités des Zindeps");
+        feed.setLink(request.getBase() + "/disponibilites");
+        feed.setCopyright("tous droits réservés LesZindeps");
+        feed.setDescription("flux des disponibilités des Zindeps");
+        feed.setPublishedDate(new Date());
+        feed.setLanguage("fr");
+        List entries = new ArrayList();
+        List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
+        for (ZindepAvailabilitiesEntry availability : all) {
+            SyndEntry entry = new SyndEntryImpl();
+            Zindep zindepModified = Zindep.findById(availability.lastZindepModifiedId);
+            if (availability.currentAvailability.equals(Zindep.Availability.FULL_TIME)) {
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible à plein temps");
+            } else if (availability.currentAvailability.equals(Zindep.Availability.PART_TIME_ONLY)) {
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible à temps partiel");
+            } else {
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " n'est plus disponible");
+            }
+
+
+            entry.setLink(zindepModified.getProfileUrl());
+            entry.setPublishedDate(availability.updateDate);
+
+            SyndContent description = new SyndContentImpl();
+            description.setType("text/plain");
+            description.setValue("blabla");
+            entry.setDescription(description);
+
+            entries.add(entry);
+        }
+
+        feed.setEntries(entries);
+
+
+        StringWriter writer = new StringWriter();
+        SyndFeedOutput out = new SyndFeedOutput();
+        try {
+            out.output(feed, writer);
+        } catch (IOException e) {
+            flash("error", "Erreur d'entrée/sortie (StringWriter) lors de la sérialisation du flux : " + e.getMessage());
+        } catch (FeedException e) {
+            flash("error", "Erreur lors de la sérialisation du flux : " + e.getMessage());
+        }
+
+        response.contentType = "application/rss+xml";
+        response.encoding = "UTF-8";
+
+        renderXml(writer.toString());
     }
 
 

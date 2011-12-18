@@ -28,16 +28,16 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 import play.db.jpa.GenericModel;
 
-import javax.persistence.*;
-import java.net.URL;
-import java.util.Collection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
  * représente les disponibilités à un instant t des zindeps.
  */
 @Entity
-public class ZindepAvailabilitiesEntry extends GenericModel{
+public class ZindepAvailabilitiesEntry extends GenericModel {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -46,11 +46,16 @@ public class ZindepAvailabilitiesEntry extends GenericModel{
 
     public Date updateDate;
     @play.data.validation.URL
-    public String lastZindepModifiedURL;
+    public String lastZindepModifiedId;
     public Zindep.Availability previousAvailability;
     public Zindep.Availability currentAvailability;
-    public String zindepsWithAPartTimeAvailability;
-    public String zindepsWithAFullTimeAvailability;
+
+
+    public String zindepsPartTime;
+
+    public String zindepsFullTime;
+
+    public String zindepsNotAvailable;
 
 
 }

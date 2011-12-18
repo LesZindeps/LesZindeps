@@ -165,8 +165,8 @@ a.selected {
     font-size: 12px;
 }
 
-.zindepTable a{
-    text-decoration:none;
+.zindepTable a {
+    text-decoration: none;
 }
 
 .zindepTable td {
@@ -439,7 +439,7 @@ legend {
 
 .zindepPicture {
     height: 80px;
-    width:80px;
+    width: 80px;
     border-width: 1px;
     border-color: #dfdfdf;
     border-style: solid;
@@ -553,7 +553,7 @@ legend {
     padding: 13px 6px 13px 6px;
     border: 1px solid #dfdfdf;
     background-color: #252525;
-    color:#fff;
+    color: #fff;
 
 }
 
@@ -578,14 +578,26 @@ legend {
 * Details d'une fiche
 * ------------------------------------------- */
 .infosDetails {
-	font-size: 9pt;
-	color: #7e807f;
+    font-size: 9pt;
+    color: #7e807f;
 }
 
-.positive{
-	background-color: #D1F3D1;
+.positive {
+    background-color: #D1F3D1;
 }
-.negative{
-	background-color: #FFCCCA;
+
+.negative {
+    background-color: #FFCCCA;
+}
+
+.feed {
+    margin: 4em 0 0 0;
+    padding: 0 0 10px 0;
+    background: url("../images/feed-icon-28x28.png") no-repeat 0 50%;
+}
+
+.feed a {
+    padding-left: 2.0em;
+    font-size: 1.3em;
 }
 
