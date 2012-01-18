@@ -75,16 +75,18 @@ public class Application extends Controller {
         render(listOfZindeps);
     }
 
-
+    /**
+     * liste les derniers états de disponibilité des zindeps
+     */
     public static void disponibilites() {
         SyndFeed feed = new SyndFeedImpl();
         feed.setAuthor("Les Zindeps");
         feed.setFeedType("atom_1.0");
-        feed.setTitle("disponibilités des Zindeps");
+        feed.setTitle("disponibilit&eacute;s des Zindeps");
         feed.setLink(request.getBase() + "/disponibilites");
-        feed.setCopyright("tous droits réservés LesZindeps");
-        feed.setDescription("flux des disponibilités des Zindeps");
-        feed.setPublishedDate(new Date());
+        feed.setCopyright("tous droits r&eacute;serv&eacute;s LesZindeps");
+        feed.setDescription("flux des disponibilit&eacute;s des Zindeps");
+        feed.setEncoding("UTF-8");
         feed.setLanguage("fr");
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
@@ -92,24 +94,27 @@ public class Application extends Controller {
             SyndEntry entry = new SyndEntryImpl();
             Zindep zindepModified = Zindep.findById(availability.lastZindepModifiedId);
             if (zindepModified == null) {
-                Logger.error("zindep with id =" + availability.lastZindepModifiedId + " is null");
+                Logger.error("zindep registered in disponibilites with id =" + availability.lastZindepModifiedId + " is null");
                 continue;
             }
+            if (feed.getPublishedDate() == null) {
+                feed.setPublishedDate(availability.updateDate);
+            }
             if (availability.currentAvailability.equals(Zindep.Availability.FULL_TIME)) {
-                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible à plein temps");
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible &agrave; plein temps");
             } else if (availability.currentAvailability.equals(Zindep.Availability.PART_TIME_ONLY)) {
-                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible à temps partiel");
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible &agrave; temps partiel");
             } else {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " n'est plus disponible");
             }
 
 
-            entry.setLink(zindepModified.getProfileUrl());
+            entry.setLink(request.getBase() + "/disponibilite/" + availability.id);
             entry.setPublishedDate(availability.updateDate);
 
             SyndContent description = new SyndContentImpl();
             description.setType("text/html");
-            description.setValue("zindep url : " + zindepModified.getProfileUrl());
+            description.setValue(entry.getTitle() + "\n les autres zindeps disponibles sont....");
             entry.setDescription(description);
 
             entries.add(entry);
@@ -132,6 +137,15 @@ public class Application extends Controller {
         response.encoding = UTF_8;
 
         renderXml(writer.toString());
+    }
+
+    /**
+     * liste le dernier état de disponibilité des zindeps.
+     */
+    public static void disponibilite(String id) {
+        ZindepAvailabilitiesEntry entry = ZindepAvailabilitiesEntry.findById(id);
+        renderJSON(entry);
+
     }
 
 

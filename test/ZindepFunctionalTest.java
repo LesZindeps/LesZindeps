@@ -29,6 +29,9 @@ public class ZindepFunctionalTest extends FunctionalTest {
     public static final String AUTHENTICITY_TOKEN_KEY = "___AT";
     public static final String ZINDEP_WITHOUT_PICTURE_URL_EMAIL = "pierre@letesteur.fr";
     public static final String PICTURE_ON_LINKED_IN = "http://media.linkedin.com/mpr/mprx/0_-vl8EBrjrIhgK-YHrn30Eqi1rwQtKlmHKN50EqACfmtC7zMeYPTuXN5uOL6S1n7X1nPY5Pfgv14Y";
+    public static final String ZINDEP_ID_SESSION_KEY = "zindepId";
+    public static final String ZINDEP_EMAIL_SESSION_KEY = "zindepEmail";
+    public static final String ZINDEP_PICTURE_URL_SESSION_KEY = "zindep.pictureUrl";
 
 
     /**
@@ -99,25 +102,31 @@ public class ZindepFunctionalTest extends FunctionalTest {
 
     }
 
+    /**
+     * simulate an openID authentication success for the zindep with the id and email provided.
+     *
+     * @param zindepId    id of Zindep
+     * @param zindepEmail email of the zindep successfully authenticated
+     * @return
+     */
     private Http.Request setOpenIDAuthenticationSucess(String zindepId, String zindepEmail) {
         Scope.Session session = Scope.Session.current();
         session.put(AUTHENTICITY_TOKEN_KEY, session.getAuthenticityToken());
-        session.put("zindepId", zindepId);
-        session.put("zindepEmail", zindepEmail);
+        session.put(ZINDEP_ID_SESSION_KEY, zindepId);
+        session.put(ZINDEP_EMAIL_SESSION_KEY, zindepEmail);
         return setSessionWithNewRequest(session);
     }
 
     protected Http.Request authenticateAndPopulateSession(String zindepEmail) {
         Http.Request request = authenticateAndPopulateSessionWithoutPictureUrl(zindepEmail);
-        request.params.put("zindep.pictureUrl", PICTURE_ON_LINKED_IN);
+        request.params.put(ZINDEP_PICTURE_URL_SESSION_KEY, PICTURE_ON_LINKED_IN);
         return request;
     }
 
     public String authenticateAndReturnSessionValue(String zindepEmail) {
         Http.Request request = authenticateAndPopulateSessionWithoutPictureUrl(zindepEmail);
-        request.params.put("zindep.pictureUrl", PICTURE_ON_LINKED_IN);
-        String value = request.cookies.get("PLAY_SESSION").value;
-        return value;
+        request.params.put(ZINDEP_PICTURE_URL_SESSION_KEY, PICTURE_ON_LINKED_IN);
+        return request.cookies.get("PLAY_SESSION").value;
     }
 
     protected Http.Request authenticateAndPopulateSessionWithoutPictureUrl(String zindepEmail) {
@@ -126,6 +135,13 @@ public class ZindepFunctionalTest extends FunctionalTest {
         return authenticateAndPopulateProfileFormForFacelessUser(zindepEmail, zindepId);
     }
 
+    /**
+     * authenticate a zindep which does not have a picture in its profile.
+     *
+     * @param zindepEmailWithoutPictureUrl
+     * @param zindepId
+     * @return
+     */
     private Http.Request authenticateAndPopulateProfileFormForFacelessUser(String zindepEmailWithoutPictureUrl, String zindepId) {
         Http.Request request = setOpenIDAuthenticationSucess(zindepId, zindepEmailWithoutPictureUrl);
         request.params.put("zindep.email", zindepEmailWithoutPictureUrl);
