@@ -6,6 +6,7 @@ import org.junit.Test;
 import play.test.Fixtures;
 import play.test.UnitTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -154,5 +155,49 @@ public class ZindepTest extends UnitTest {
         assertThat(entry.previousAvailability, is(Zindep.Availability.FULL_TIME));
 
     }
+
+
+    @Test
+    public void test_setCurrentAvailability_nominal_case() {
+
+        //given
+        ZindepAvailabilitiesEntry.deleteAll();
+        String zindepIds = Zindep.getZindepIdsAsString(Zindep.Availability.NOT_AVAILABLE);
+        List<String> ids = Arrays.asList(zindepIds.split(","));
+        assertThat(ids.size(), is(6));
+        assertThat(new Long(ZindepAvailabilitiesEntry.count()).intValue(), is(0));
+
+        //when
+        Zindep zindep = Zindep.findById(ids.get(0));
+        zindep.setCurrentAvailability(Zindep.Availability.FULL_TIME);
+        zindep.save();
+
+        //then
+        assertThat(new Long(ZindepAvailabilitiesEntry.count()).intValue(), is(1));
+
+    }
+
+    @Test
+    public void test_setCurrentAvailability_change_and_revert() {
+
+        //given
+        ZindepAvailabilitiesEntry.deleteAll();
+        String zindepIds = Zindep.getZindepIdsAsString(Zindep.Availability.NOT_AVAILABLE);
+        List<String> ids = Arrays.asList(zindepIds.split(","));
+        assertThat(ids.size(), is(6));
+        assertThat(new Long(ZindepAvailabilitiesEntry.count()).intValue(), is(0));
+
+        //when
+        Zindep zindep = Zindep.findById(ids.get(0));
+        zindep.setCurrentAvailability(Zindep.Availability.FULL_TIME);
+        zindep.save();
+        zindep.setCurrentAvailability(Zindep.Availability.NOT_AVAILABLE);
+        zindep.save();
+
+        //then
+        assertThat(new Long(ZindepAvailabilitiesEntry.count()).intValue(), is(2));
+
+    }
+
 
 }

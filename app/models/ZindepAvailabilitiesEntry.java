@@ -34,7 +34,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * représente les disponibilités à un instant t des zindeps.
+ * représente l'état de disponibilité des zindeps lorsqu'un d'entre eux change la sienne.
  */
 @Entity
 public class ZindepAvailabilitiesEntry extends GenericModel {

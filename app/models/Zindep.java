@@ -27,6 +27,7 @@
 package models;
 
 import org.hibernate.annotations.GenericGenerator;
+import play.Logger;
 import play.data.validation.Email;
 import play.data.validation.MaxSize;
 import play.data.validation.Required;
@@ -51,7 +52,7 @@ import java.util.Map;
 public class Zindep extends GenericModel {
 
     public static final String UNDEFINED = "undefined";
-    public static final String URL_SEPARATOR = "::";
+    public static final String URL_SEPARATOR = ",";
 
     public static enum Availability {
         NOT_AVAILABLE("Non disponible"),
@@ -267,11 +268,13 @@ public class Zindep extends GenericModel {
             entry.currentAvailability = currentAvailability;
             entry.previousAvailability = this.currentAvailability;
             entry.updateDate = new Date();
-            entry.lastZindepModifiedId = getProfileUrl();
-            entry.zindepsFullTime = getZindepIds(Availability.FULL_TIME);
-            entry.zindepsPartTime = getZindepIds(Availability.PART_TIME_ONLY);
-            entry.zindepsNotAvailable = getZindepIds(Availability.NOT_AVAILABLE);
+            entry.zindepsFullTime = getZindepIdsAsString(Availability.FULL_TIME);
+            entry.zindepsPartTime = getZindepIdsAsString(Availability.PART_TIME_ONLY);
+            entry.zindepsNotAvailable = getZindepIdsAsString(Availability.NOT_AVAILABLE);
             entry.save();
+            Logger.debug("ZindepAvailabilitiesEntry saved with id =" + id);
+            Logger.debug("ZindepAvailabilitiesEntry saved with previousAvailability =" + entry.previousAvailability);
+            Logger.debug("ZindepAvailabilitiesEntry saved with currentAvailability =" + entry.currentAvailability);
         }
         this.currentAvailability = currentAvailability;
     }
@@ -283,7 +286,7 @@ public class Zindep extends GenericModel {
      * @param availability
      * @return
      */
-    public static String getZindepIds(Availability availability) {
+    public static String getZindepIdsAsString(Availability availability) {
         List<Zindep> zindepsAvailable = findAllByAvailability(availability);
         StringBuilder fullTimeUrls = new StringBuilder();
         for (Zindep zindep : zindepsAvailable) {

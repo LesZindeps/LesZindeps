@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * base test for functional Tests.
- * it add some specific methods like setSession.
+ * it add some specific methods like setSessionWithNewRequest.
  */
 public class ZindepFunctionalTest extends FunctionalTest {
 
@@ -32,14 +32,14 @@ public class ZindepFunctionalTest extends FunctionalTest {
 
 
     /**
-     * store Session in cookie request and response, and set the authenticityTOken into param form.
+     * store Session in cookie request and response, and set the authenticityToken into param form.
      *
      * @param session
      * @return
      */
-    private Http.Request setSession(Scope.Session session) {
+    private Http.Request setSessionWithNewRequest(Scope.Session session) {
         Http.Request request = newRequest();
-        save(session);
+        saveSessionInCurrentRequest(session);
         request.cookies = Http.Response.current().cookies;
         request.params.put("authenticityToken", session.getAuthenticityToken());
         return request;
@@ -51,7 +51,7 @@ public class ZindepFunctionalTest extends FunctionalTest {
      *
      * @param ses
      */
-    private void save(Scope.Session ses) {
+    private void saveSessionInCurrentRequest(Scope.Session ses) {
         Map<String, String> data = ses.all();
 
 
@@ -104,7 +104,7 @@ public class ZindepFunctionalTest extends FunctionalTest {
         session.put(AUTHENTICITY_TOKEN_KEY, session.getAuthenticityToken());
         session.put("zindepId", zindepId);
         session.put("zindepEmail", zindepEmail);
-        return setSession(session);
+        return setSessionWithNewRequest(session);
     }
 
     protected Http.Request authenticateAndPopulateSession(String zindepEmail) {
@@ -123,8 +123,7 @@ public class ZindepFunctionalTest extends FunctionalTest {
     protected Http.Request authenticateAndPopulateSessionWithoutPictureUrl(String zindepEmail) {
         TypedQuery<String> query = JPA.em().createQuery("select z.id from models.Zindep z where z.email ='" + zindepEmail + "'", String.class);
         String zindepId = query.getSingleResult();
-        Http.Request request = authenticateAndPopulateProfileFormForFacelessUser(zindepEmail, zindepId);
-        return request;
+        return authenticateAndPopulateProfileFormForFacelessUser(zindepEmail, zindepId);
     }
 
     private Http.Request authenticateAndPopulateProfileFormForFacelessUser(String zindepEmailWithoutPictureUrl, String zindepId) {

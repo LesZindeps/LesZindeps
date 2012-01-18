@@ -51,6 +51,9 @@ import java.util.List;
  */
 public class Application extends Controller {
 
+    public static final String ATOM_CONTENT_TYPE = "application/atom+xml";
+    public static final String UTF_8 = "UTF-8";
+
     /**
      * Page d'accueil du site.
      */
@@ -83,11 +86,15 @@ public class Application extends Controller {
         feed.setDescription("flux des disponibilités des Zindeps");
         feed.setPublishedDate(new Date());
         feed.setLanguage("fr");
-        List entries = new ArrayList();
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
         List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
         for (ZindepAvailabilitiesEntry availability : all) {
             SyndEntry entry = new SyndEntryImpl();
             Zindep zindepModified = Zindep.findById(availability.lastZindepModifiedId);
+            if (zindepModified == null) {
+                Logger.error("zindep with id =" + availability.lastZindepModifiedId + " is null");
+                continue;
+            }
             if (availability.currentAvailability.equals(Zindep.Availability.FULL_TIME)) {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible à plein temps");
             } else if (availability.currentAvailability.equals(Zindep.Availability.PART_TIME_ONLY)) {
@@ -101,8 +108,8 @@ public class Application extends Controller {
             entry.setPublishedDate(availability.updateDate);
 
             SyndContent description = new SyndContentImpl();
-            description.setType("text/plain");
-            description.setValue("blabla");
+            description.setType("text/html");
+            description.setValue("zindep url : " + zindepModified.getProfileUrl());
             entry.setDescription(description);
 
             entries.add(entry);
@@ -121,8 +128,8 @@ public class Application extends Controller {
             flash("error", "Erreur lors de la sérialisation du flux : " + e.getMessage());
         }
 
-        response.contentType = "application/rss+xml";
-        response.encoding = "UTF-8";
+        response.contentType = ATOM_CONTENT_TYPE;
+        response.encoding = UTF_8;
 
         renderXml(writer.toString());
     }
