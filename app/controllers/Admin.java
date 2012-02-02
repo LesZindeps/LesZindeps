@@ -42,6 +42,7 @@ import java.util.List;
  * @since 22 déc. 2010 21:48:49
  */
 public class Admin extends Controller {
+    public static final String ZINDEP_ID = "zindepId";
     // Protege toutes les methodes sauf index et authentification via openid
     //et authenticateAs pour les tests
 
@@ -52,7 +53,7 @@ public class Admin extends Controller {
             "authenticateAs"
     })
     static void checkLogin() {
-        if (!session.contains("zindepId")) {
+        if (!session.contains(ZINDEP_ID)) {
             flash.error("Merci de vous authentifier pour accéder à cette partie.");
             index();
         }
@@ -62,7 +63,7 @@ public class Admin extends Controller {
      * Affiche la page d'accueil
      */
     public static void index() {
-        if (session.contains("zindepId")) {
+        if (session.contains(ZINDEP_ID)) {
             welcome();
         } else {
             render();
@@ -70,7 +71,7 @@ public class Admin extends Controller {
     }
 
     public static void logout() {
-        session.remove("zindepId");
+        session.remove(ZINDEP_ID);
         session.remove("zindepEmail");
         flash.success("Vous avez été délogué.");
         index();
@@ -130,7 +131,7 @@ public class Admin extends Controller {
                     + " pour pouvoir vous authentifier avec ce compte.");
             index();
         }
-        session.put("zindepId", zindep.id);
+        session.put(ZINDEP_ID, zindep.id);
         session.put("zindepEmail", zindep.email);
 
         flash.success("Bienvenue " + zindep.firstName);
@@ -147,7 +148,7 @@ public class Admin extends Controller {
      * et on recharge l'entité
      */
     public static void showMyProfile() {
-        String id = session.get("zindepId");
+        String id = session.get(ZINDEP_ID);
         if (id == null) {
             error("Probleme avec l'authentification");
         }
@@ -168,7 +169,7 @@ public class Admin extends Controller {
      */
     public static void doUpdateMyProfile(Zindep zindep) {
         checkAuthenticity(); // See http://www.playframework.org/documentation/1.1.1/releasenotes-1.0.2 
-        String id = session.get("zindepId");
+        String id = session.get(ZINDEP_ID);
         if (id == null) {
             error("Probleme avec l'authentification");
             return;
@@ -250,7 +251,7 @@ public class Admin extends Controller {
 
 
     public static void importFromLinkedIn() {
-        String id = session.get("zindepId");
+        String id = session.get(ZINDEP_ID);
         if (id == null) {
             error("Probleme avec l'authentification");
         }
@@ -282,7 +283,7 @@ public class Admin extends Controller {
 
         if (zindep == null) {
             // Recherche via la session
-            Zindep fromSession = Zindep.findById(session.get("zindepId"));
+            Zindep fromSession = Zindep.findById(session.get(ZINDEP_ID));
             if (fromSession == null) {
                 flash.error("Impossible de retrouver votre compte... vous n'etes pas authentifié ?");
                 render();
@@ -307,7 +308,7 @@ public class Admin extends Controller {
      */
     public static void doUpdateMyProfileFromLinkedIn(String firstName, String lastName, String title, String pictureUrl,
                                                      String bio, String techno) {
-        String id = session.get("zindepId");
+        String id = session.get(ZINDEP_ID);
         if (id == null) {
             error("Probleme avec l'authentification");
         }

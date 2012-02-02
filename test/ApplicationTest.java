@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import play.mvc.Http;
 import play.mvc.Http.Response;
+import play.mvc.Scope;
 import play.test.Fixtures;
 
 import java.io.ByteArrayInputStream;
@@ -41,6 +42,7 @@ public class ApplicationTest extends ZindepFunctionalTest {
     public void testThatAdminPageIsProtected() {
         Response response = GET("/admin/showmyprofile");
         assertStatus(302, response);
+        assertThat(response.getHeader("Location"), is("/admin/index"));
     }
 
 
@@ -53,23 +55,33 @@ public class ApplicationTest extends ZindepFunctionalTest {
     @Test
     public void testDisponibilites_nominal_case() throws IOException, FeedException {
         //given
-        SyndFeed feed = getFeed();
+        Http.Request request = authenticateAndPopulateSession(ZINDEP_NOT_AVAILABLE_EMAIL);
+
+        SyndFeed feed = getFeed(request);
         assertThat(feed.getEntries().size(), is(0));
 
 
         //when
-        Http.Request request = authenticateAndPopulateSessionWithoutPictureUrl(ZINDEP_NOT_AVAILABLE_EMAIL);
+
+        Scope.Session session = Scope.Session.current();
+        Http.Request newRequest = setSessionWithNewRequest(session);
+        Http.Response responseShowMyProfile = GET(newRequest, "/admin/showMyProfile");
+        assertThat("response code for request /admin/showMyProfile " + responseShowMyProfile.status.toString() + " location=" + responseShowMyProfile.getHeader("Location"), responseShowMyProfile.status, is(OK));
+        request = setSessionWithNewRequest(session);
         //change availability and save
         request.params.put("currentAvailability", Zindep.Availability.FULL_TIME.toString());
         Http.Response response = POST(request, "/admin/doUpdateMyProfile");
+        session = Scope.Session.current();
+        assertThat("response code for request /admin/doUpdateMyProfile " + response.status.toString(), response.status, is(302));
+        assertThat("response location Header for request /admin/doUpdateMyProfile ", response.getHeader("Location"), is("/admin/showmyprofile"));
 
         //then
-        SyndFeed feed2 = getFeed();
+        SyndFeed feed2 = getFeed(setSessionWithNewRequest(session));
         assertThat(feed2.getEntries().size(), is(1));
     }
 
-    private SyndFeed getFeed() throws FeedException, IOException {
-        Response disponibilitesResponse = GET("/disponibilites");
+    private SyndFeed getFeed(Http.Request request) throws FeedException, IOException {
+        Response disponibilitesResponse = GET(request, "/disponibilites");
         assertStatus(OK, disponibilitesResponse);
         assertContentType(ATOM_CONTENT_TYPE, disponibilitesResponse);
         SyndFeedInput input = new SyndFeedInput();

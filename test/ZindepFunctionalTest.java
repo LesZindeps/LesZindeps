@@ -40,7 +40,7 @@ public class ZindepFunctionalTest extends FunctionalTest {
      * @param session
      * @return
      */
-    private Http.Request setSessionWithNewRequest(Scope.Session session) {
+    public Http.Request setSessionWithNewRequest(Scope.Session session) {
         Http.Request request = newRequest();
         saveSessionInCurrentRequest(session);
         request.cookies = Http.Response.current().cookies;
