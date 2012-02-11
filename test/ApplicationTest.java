@@ -2,7 +2,6 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
-import models.Zindep;
 import org.junit.Before;
 import org.junit.Test;
 import play.mvc.Http;
@@ -66,15 +65,18 @@ public class ApplicationTest extends ZindepFunctionalTest {
         Scope.Session session = Scope.Session.current();
         Http.Request newRequest = setSessionWithNewRequest(session);
         Http.Response responseShowMyProfile = GET(newRequest, "/admin/showMyProfile");
-        assertThat("response code for request /admin/showMyProfile " + responseShowMyProfile.status.toString() + " location=" + responseShowMyProfile.getHeader("Location"), responseShowMyProfile.status, is(OK));
+        assertThat("response code for request /admin/showMyProfile " + responseShowMyProfile.status.toString() + " location=" + responseShowMyProfile.getHeader("Location"), responseShowMyProfile.status, is(200));
+
         request = setSessionWithNewRequest(session);
         //change availability and save
-        request.params.put("currentAvailability", Zindep.Availability.FULL_TIME.toString());
+
+        request.params.put("zindep.availability", "FULL_TIME");
+        request.params.put("zindep.currentAvailability", "FULL_TIME");
+        request.params.put("zindep.id", session.get("zindepId"));
         Http.Response response = POST(request, "/admin/doUpdateMyProfile");
         session = Scope.Session.current();
-        assertThat("response code for request /admin/doUpdateMyProfile " + response.status.toString(), response.status, is(302));
-        assertThat("response location Header for request /admin/doUpdateMyProfile ", response.getHeader("Location"), is("/admin/showmyprofile"));
-
+        assertThat("response code for request /admin/doUpdateMyProfile " + response.status.toString() + " location=" + response.getHeader("Location"), response.status, is(302));
+        assertThat(response.getHeader("Location"), is("/admin/showmyprofile"));
         //then
         SyndFeed feed2 = getFeed(setSessionWithNewRequest(session));
         assertThat(feed2.getEntries().size(), is(1));

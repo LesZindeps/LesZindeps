@@ -28,11 +28,14 @@ package controllers;
 
 import models.Propal;
 import models.Zindep;
+import play.Logger;
+import play.data.validation.Error;
 import play.libs.OpenID;
 import play.mvc.Before;
 import play.mvc.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Ce controleur permet à chaque Zindep de gérer son profil librement.
@@ -215,6 +218,13 @@ public class Admin extends Controller {
         // Derniere validation globale
         validation.valid(zindep);
         if (validation.hasErrors()) {
+            Map<String, List<Error>> map = validation.errorsMap();
+            Logger.info("zindep updated is invalid:");
+            for (List<Error> errors : map.values()) {
+                for (Error error : errors) {
+                    Logger.debug("key=" + error.getKey() + " message=" + error.message());
+                }
+            }
             render("@showMyProfile", zindep);
             return;
         }
