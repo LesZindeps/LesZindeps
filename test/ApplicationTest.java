@@ -1,3 +1,4 @@
+import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
@@ -70,16 +71,24 @@ public class ApplicationTest extends ZindepFunctionalTest {
         request = setSessionWithNewRequest(session);
         //change availability and save
 
-        request.params.put("zindep.availability", "FULL_TIME");
         request.params.put("zindep.currentAvailability", "FULL_TIME");
         request.params.put("zindep.id", session.get("zindepId"));
         Http.Response response = POST(request, "/admin/doUpdateMyProfile");
         session = Scope.Session.current();
+        //then
         assertThat("response code for request /admin/doUpdateMyProfile " + response.status.toString() + " location=" + response.getHeader("Location"), response.status, is(302));
         assertThat(response.getHeader("Location"), is("/admin/showmyprofile"));
-        //then
         SyndFeed feed2 = getFeed(setSessionWithNewRequest(session));
         assertThat(feed2.getEntries().size(), is(1));
+        for (Object entry : feed2.getEntries()) {
+            SyndEntry myEntry = (SyndEntry) entry;
+            String link = myEntry.getLink();
+
+            Response dispoResponse = GET(setSessionWithNewRequest(session), link);
+            assertThat(dispoResponse.status, is(200));
+            String dispoContent = dispoResponse.out.toString("UTF-8");
+
+        }
     }
 
     private SyndFeed getFeed(Http.Request request) throws FeedException, IOException {

@@ -1,0 +1,12 @@
+#{extends 'main.html' /}
+#{set title:'changement de disponibilité' /}
+
+<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/wufoo.css'}"/>
+
+previous availability = ${entry.previousAvailability} <br/>
+current availability = ${entry.currentAvailability}<br/>
+
+date = ${entry.updateDate}<br/>
+zindeps disponibles à plein temps=${entry.zindepsFullTime}<br/>
+zindeps non disponible ${entry.zindepsNotAvailable}<br/>
+zindeps à temps partiel =${entry.zindepsPartTime}<br/>

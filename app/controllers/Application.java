@@ -35,13 +35,11 @@ import models.ZindepAvailabilitiesEntry;
 import notifiers.Mails;
 import play.Logger;
 import play.mvc.Controller;
+import play.mvc.Router;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -52,7 +50,16 @@ import java.util.List;
 public class Application extends Controller {
 
     public static final String ATOM_CONTENT_TYPE = "application/atom+xml";
+    public static final String EST_DISPONIBLE_A_PLEIN_TEMPS = " est disponible &agrave; plein temps";
+    public static final String EST_DISPONIBLE_A_TEMPS_PARTIEL = " est disponible &agrave; temps partiel";
+    public static final String N_EST_PLUS_DISPONIBLE = " n'est plus disponible";
+    public static final String ATOM_1_0_FEED_TYPE = "atom_1.0";
+    public static final String DISPONIBILITE_DES_ZINDEPS = "disponibilit&eacute;s des Zindeps";
+    public static final String TOUS_DROITS_RESERVES_LES_ZINDEPS = "tous droits r&eacute;serv&eacute;s LesZindeps";
+    public static final String FLUX_DES_DISPONIBILITES_DES_ZINDEPS = "flux des disponibilit&eacute;s des Zindeps";
     public static final String UTF_8 = "UTF-8";
+    public static final String FRENCH = "fr";
+    public static final String TEXT_HTML_MIME_TYPE = "text/html";
 
     /**
      * Page d'accueil du site.
@@ -81,13 +88,13 @@ public class Application extends Controller {
     public static void disponibilites() {
         SyndFeed feed = new SyndFeedImpl();
         feed.setAuthor("Les Zindeps");
-        feed.setFeedType("atom_1.0");
-        feed.setTitle("disponibilit&eacute;s des Zindeps");
+        feed.setFeedType(ATOM_1_0_FEED_TYPE);
+        feed.setTitle(DISPONIBILITE_DES_ZINDEPS);
         feed.setLink(request.getBase() + "/disponibilites");
-        feed.setCopyright("tous droits r&eacute;serv&eacute;s LesZindeps");
-        feed.setDescription("flux des disponibilit&eacute;s des Zindeps");
-        feed.setEncoding("UTF-8");
-        feed.setLanguage("fr");
+        feed.setCopyright(TOUS_DROITS_RESERVES_LES_ZINDEPS);
+        feed.setDescription(FLUX_DES_DISPONIBILITES_DES_ZINDEPS);
+        feed.setEncoding(UTF_8);
+        feed.setLanguage(FRENCH);
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
         for (ZindepAvailabilitiesEntry availability : all) {
@@ -101,19 +108,21 @@ public class Application extends Controller {
                 feed.setPublishedDate(availability.updateDate);
             }
             if (availability.currentAvailability.equals(Zindep.Availability.FULL_TIME)) {
-                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible &agrave; plein temps");
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + EST_DISPONIBLE_A_PLEIN_TEMPS);
             } else if (availability.currentAvailability.equals(Zindep.Availability.PART_TIME_ONLY)) {
-                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " est disponible &agrave; temps partiel");
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + EST_DISPONIBLE_A_TEMPS_PARTIEL);
             } else {
-                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + " n'est plus disponible");
+                entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + N_EST_PLUS_DISPONIBLE);
             }
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("id", availability.id);
+            String url = Router.reverse("Application.disponibilite", parameters).url;
 
-
-            entry.setLink(request.getBase() + "/disponibilite/" + availability.id);
+            entry.setLink(url);
             entry.setPublishedDate(availability.updateDate);
 
             SyndContent description = new SyndContentImpl();
-            description.setType("text/html");
+            description.setType(TEXT_HTML_MIME_TYPE);
             description.setValue(entry.getTitle() + "\n les autres zindeps disponibles sont....");
             entry.setDescription(description);
 
@@ -140,11 +149,13 @@ public class Application extends Controller {
     }
 
     /**
-     * liste le dernier état de disponibilité des zindeps.
+     * liste un état de disponibilité des zindeps.
+     *
+     * @param id de l'état de disponibilité
      */
     public static void disponibilite(String id) {
         ZindepAvailabilitiesEntry entry = ZindepAvailabilitiesEntry.findById(id);
-        renderJSON(entry);
+        render(entry);
 
     }
 
@@ -165,7 +176,7 @@ public class Application extends Controller {
      */
     public static void submitMission(Propal propal) {
         propal.creationDate = new Date();
-        if (propal.validateAndSave() == false) {
+        if (!propal.validateAndSave()) {
             flash.error("Erreur, impossible de créer votre demande, merci de corriger le formulaire");
             validation.keep();
             mission();
