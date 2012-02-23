@@ -99,9 +99,9 @@ public class Application extends Controller {
         List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
         for (ZindepAvailabilitiesEntry availability : all) {
             SyndEntry entry = new SyndEntryImpl();
-            Zindep zindepModified = Zindep.findById(availability.lastZindepModifiedId);
+            Zindep zindepModified = Zindep.findById(availability.lastZindepModified.id);
             if (zindepModified == null) {
-                Logger.error("zindep registered in disponibilites with id =" + availability.lastZindepModifiedId + " is null");
+                Logger.error("zindep registered in disponibilites with id =" + availability.lastZindepModified + " is null");
                 continue;
             }
             if (feed.getPublishedDate() == null) {
@@ -155,7 +155,12 @@ public class Application extends Controller {
      */
     public static void disponibilite(String id) {
         ZindepAvailabilitiesEntry entry = ZindepAvailabilitiesEntry.findById(id);
-        render(entry);
+        if (entry != null) {
+            render(entry);
+        } else {
+            flash.error("identifiant de disponibilité erroné");
+            index();
+        }
 
     }
 

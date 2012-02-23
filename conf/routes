@@ -30,7 +30,7 @@ GET /p/{firstName}/{lastName}/{id} Application.showProfile
 GET /qui            Application.qui
 
 #flux atom des disponibilites
-GET /disponibilites       Application.disponibilites(format:'xml')
+GET /disponibilites       Application.disponibilites(format:'application/atom+xml')
 GET /disponibilite/{id}       Application.disponibilite
 
 GET /mission        Application.mission

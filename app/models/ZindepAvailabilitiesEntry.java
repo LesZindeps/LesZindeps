@@ -31,6 +31,7 @@ import play.db.jpa.GenericModel;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Date;
 
 /**
@@ -45,8 +46,8 @@ public class ZindepAvailabilitiesEntry extends GenericModel {
     public String id;
 
     public Date updateDate;
-    @play.data.validation.URL
-    public String lastZindepModifiedId;
+    @OneToOne
+    public Zindep lastZindepModified;
     public Zindep.Availability previousAvailability;
     public Zindep.Availability currentAvailability;
 

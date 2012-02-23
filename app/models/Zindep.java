@@ -264,7 +264,7 @@ public class Zindep extends GenericModel {
     public void setCurrentAvailability(Availability currentAvailability) {
         if (this.currentAvailability != null && !this.currentAvailability.equals(currentAvailability)) {
             ZindepAvailabilitiesEntry entry = new ZindepAvailabilitiesEntry();
-            entry.lastZindepModifiedId = id;
+            entry.lastZindepModified = this;
             entry.currentAvailability = currentAvailability;
             entry.previousAvailability = this.currentAvailability;
             entry.updateDate = new Date();
