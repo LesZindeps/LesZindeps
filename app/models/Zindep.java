@@ -268,9 +268,9 @@ public class Zindep extends GenericModel {
             entry.currentAvailability = currentAvailability;
             entry.previousAvailability = this.currentAvailability;
             entry.updateDate = new Date();
-            entry.zindepsFullTime = getZindepIdsAsString(Availability.FULL_TIME);
-            entry.zindepsPartTime = getZindepIdsAsString(Availability.PART_TIME_ONLY);
-            entry.zindepsNotAvailable = getZindepIdsAsString(Availability.NOT_AVAILABLE);
+            entry.zindepsFullTime.addAll(findAllByAvailability(Availability.FULL_TIME));
+            entry.zindepsPartTime.addAll(findAllByAvailability(Availability.PART_TIME_ONLY));
+            entry.zindepsNotAvailable.addAll(findAllByAvailability(Availability.NOT_AVAILABLE));
             entry.save();
             Logger.debug("ZindepAvailabilitiesEntry saved with id =" + id);
             Logger.debug("ZindepAvailabilitiesEntry saved with previousAvailability =" + entry.previousAvailability);

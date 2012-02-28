@@ -28,11 +28,10 @@ package models;
 import org.hibernate.annotations.GenericGenerator;
 import play.db.jpa.GenericModel;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * représente l'état de disponibilité des zindeps lorsque l'un d'entre eux change la sienne.
@@ -51,12 +50,27 @@ public class ZindepAvailabilitiesEntry extends GenericModel {
     public Zindep.Availability previousAvailability;
     public Zindep.Availability currentAvailability;
 
-
-    public String zindepsPartTime;
-
-    public String zindepsFullTime;
-
-    public String zindepsNotAvailable;
+    @ManyToMany
+    @JoinTable(
+            name = "zindepsPartTime",
+            joinColumns = @JoinColumn(name = "availability_id"),
+            inverseJoinColumns = @JoinColumn(name = "zindep_id")
+    )
+    public Set<Zindep> zindepsPartTime = new HashSet<Zindep>();
+    @ManyToMany
+    @JoinTable(
+            name = "zindepsFullTime",
+            joinColumns = @JoinColumn(name = "availability_id"),
+            inverseJoinColumns = @JoinColumn(name = "zindep_id")
+    )
+    public Set<Zindep> zindepsFullTime = new HashSet<Zindep>();
+    @ManyToMany
+    @JoinTable(
+            name = "zindepsNotAvailable",
+            joinColumns = @JoinColumn(name = "availability_id"),
+            inverseJoinColumns = @JoinColumn(name = "zindep_id")
+    )
+    public Set<Zindep> zindepsNotAvailable = new HashSet<Zindep>();
 
 
 }

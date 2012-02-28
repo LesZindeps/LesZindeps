@@ -191,8 +191,9 @@ public class ZindepTest extends UnitTest {
         Zindep zindep = Zindep.findById(ids.get(0));
         zindep.setCurrentAvailability(Zindep.Availability.FULL_TIME);
         zindep.save();
-        zindep.setCurrentAvailability(Zindep.Availability.NOT_AVAILABLE);
-        zindep.save();
+        Zindep zindep2 = Zindep.findById(ids.get(0));
+        zindep2.setCurrentAvailability(Zindep.Availability.NOT_AVAILABLE);
+        zindep2.save();
 
         //then
         assertThat(new Long(ZindepAvailabilitiesEntry.count()).intValue(), is(2));
