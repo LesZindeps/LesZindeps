@@ -152,7 +152,12 @@ public class Application extends Controller {
             description.setType(TEXT_HTML_MIME_TYPE);
             description.setValue(entry.getTitle() + "\n les autres zindeps disponibles sont....");
             entry.setDescription(description);
-
+            List<SyndContent> contents = new ArrayList<SyndContent>();
+            SyndContent content = new SyndContentImpl();
+            content.setValue("blablabla");
+            content.setType("html");//can be 'text', 'html', or 'xhtml'
+            contents.add(content);
+            entry.setContents(contents);
             entries.add(entry);
         }
 
