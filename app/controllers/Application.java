@@ -60,6 +60,9 @@ public class Application extends Controller {
     public static final String UTF_8 = "UTF-8";
     public static final String FRENCH = "fr";
     public static final String TEXT_HTML_MIME_TYPE = "text/html";
+    public static final String LES_ZINDEPS_AUTHOR_NAME = "Les Zindeps";
+    public static final String LES_ZINDEPS_WEB_SITE = "http://www.leszindeps.fr";
+    public static final String LES_ZINDEPS_EMAIL = "contact@leszindeps.fr";
 
     /**
      * Page d'accueil du site.
@@ -87,18 +90,29 @@ public class Application extends Controller {
      */
     public static void disponibilites() {
         SyndFeed feed = new SyndFeedImpl();
-        feed.setAuthor("Les Zindeps");
+        feed.setAuthor(LES_ZINDEPS_AUTHOR_NAME);
+        List<SyndPerson> authors = new ArrayList<SyndPerson>();
+        SyndPerson syndPerson = new SyndPersonImpl();
+        syndPerson.setName(LES_ZINDEPS_AUTHOR_NAME);
+        syndPerson.setUri(LES_ZINDEPS_WEB_SITE);
+        syndPerson.setEmail(LES_ZINDEPS_EMAIL);
+        authors.add(syndPerson);
+        feed.setAuthors(authors);
         feed.setFeedType(ATOM_1_0_FEED_TYPE);
         feed.setTitle(DISPONIBILITE_DES_ZINDEPS);
-        feed.setLink(request.getBase() + "/disponibilites");
+        String feedUrl = request.getBase() + "/disponibilites";
+        feed.setLink(feedUrl);
         feed.setCopyright(TOUS_DROITS_RESERVES_LES_ZINDEPS);
         feed.setDescription(FLUX_DES_DISPONIBILITES_DES_ZINDEPS);
         feed.setEncoding(UTF_8);
         feed.setLanguage(FRENCH);
+        feed.setUri(feedUrl);
+        feed.setPublishedDate(new Date());
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
         for (ZindepAvailabilitiesEntry availability : all) {
             SyndEntry entry = new SyndEntryImpl();
+
             Zindep zindepModified = Zindep.findById(availability.lastZindepModified.id);
             if (zindepModified == null) {
                 Logger.error("zindep registered in disponibilites with id =" + availability.lastZindepModified + " is null");
@@ -107,6 +121,16 @@ public class Application extends Controller {
             if (feed.getPublishedDate() == null) {
                 feed.setPublishedDate(availability.updateDate);
             }
+
+            //author
+            SyndPerson author = new SyndPersonImpl();
+            author.setEmail(zindepModified.email);
+            author.setName(zindepModified.firstName + " " + zindepModified.lastName);
+            author.setUri(zindepModified.getProfileUrl());
+            List<SyndPerson> entryAuthors = new ArrayList<SyndPerson>();
+            entry.setAuthors(entryAuthors);
+
+            //title
             if (availability.currentAvailability.equals(Zindep.Availability.FULL_TIME)) {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + EST_DISPONIBLE_A_PLEIN_TEMPS);
             } else if (availability.currentAvailability.equals(Zindep.Availability.PART_TIME_ONLY)) {
@@ -114,11 +138,13 @@ public class Application extends Controller {
             } else {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + N_EST_PLUS_DISPONIBLE);
             }
+
             Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("id", availability.id);
             String url = Router.reverse("Application.disponibilite", parameters).url;
 
-            entry.setLink(url);
+            entry.setLink(request.getBase() + url);
+            entry.setUri(request.getBase() + url);
             entry.setPublishedDate(availability.updateDate);
 
             SyndContent description = new SyndContentImpl();
