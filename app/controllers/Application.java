@@ -126,8 +126,9 @@ public class Application extends Controller {
             SyndPerson author = new SyndPersonImpl();
             author.setEmail(zindepModified.email);
             author.setName(zindepModified.firstName + " " + zindepModified.lastName);
-            author.setUri(zindepModified.getProfileUrl());
+            author.setUri(request.getBase() + zindepModified.getProfileUrl());
             List<SyndPerson> entryAuthors = new ArrayList<SyndPerson>();
+            entryAuthors.add(author);
             entry.setAuthors(entryAuthors);
 
             //title
