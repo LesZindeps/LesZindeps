@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="selenium.base" href="http://localhost:9000/"/>
+    <link rel="selenium.base" href="http://127.0.0.1:9000/"/>
     <title>New Test</title>
 </head>
 <body>
@@ -14,9 +14,10 @@
     </tr>
     </thead>
     <tbody>
+    <!-- reinit-->
     <tr>
         <td>open</td>
-        <td>/</td>
+        <td>http://127.0.0.1:9000/</td>
         <td></td>
     </tr>
     <tr>
@@ -31,7 +32,22 @@
     </tr>
     <tr>
         <td>open</td>
-        <td>/authenticateas/jimi%40hendrix.com</td>
+        <td>http://127.0.0.1:9000/authenticateas/jimi%40hendrix.com</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>link=Mettre à jour mon profil</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>select</td>
+        <td>id=zindep_currentAvailability</td>
+        <td>label=Non disponible</td>
+    </tr>
+    <tr>
+        <td>clickAndWait</td>
+        <td>id=submitProfile</td>
         <td></td>
     </tr>
     <tr>
@@ -39,6 +55,7 @@
         <td>link=exact:Qui ?</td>
         <td></td>
     </tr>
+
     <tr>
         <td>assertTextPresent</td>
         <td>filtrer les 4 zindeps disponibles</td>
@@ -56,7 +73,7 @@
     </tr>
     <tr>
         <td>open</td>
-        <td>/authenticateas/jimi%40hendrix.com</td>
+        <td>http://127.0.0.1:9000/authenticateas/jimi%40hendrix.com</td>
         <td></td>
     </tr>
     <tr>
@@ -81,7 +98,7 @@
     </tr>
     <tr>
         <td>assertTextPresent</td>
-        <td>filtrer les 4 zindeps disponibles</td>
+        <td>filtrer les 5 zindeps disponibles</td>
         <td></td>
     </tr>
     <tr>
@@ -91,7 +108,7 @@
     </tr>
     <tr>
         <td>open</td>
-        <td>/admin/index</td>
+        <td>http://127.0.0.1:9000/admin/index</td>
         <td></td>
     </tr>
     <tr>
