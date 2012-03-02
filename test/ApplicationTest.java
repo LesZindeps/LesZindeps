@@ -92,7 +92,7 @@ public class ApplicationTest extends ZindepFunctionalTest {
     }
 
     private SyndFeed getFeed(Http.Request request) throws FeedException, IOException {
-        Response disponibilitesResponse = GET(request, "/disponibilites");
+        Response disponibilitesResponse = GET(request, "/disponibilites.atom");
         assertStatus(OK, disponibilitesResponse);
         assertContentType(ATOM_CONTENT_TYPE, disponibilitesResponse);
         SyndFeedInput input = new SyndFeedInput();

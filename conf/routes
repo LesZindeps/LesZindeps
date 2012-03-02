@@ -31,7 +31,6 @@ GET /qui            Application.qui
 
 #flux atom des disponibilites
 GET /disponibilites.atom       Application.disponibilites(format:'application/atom+xml')
-GET /disponibilite/{id}       Application.disponibilite
 
 GET /mission        Application.mission
 POST    /submitMission     Application.submitMission

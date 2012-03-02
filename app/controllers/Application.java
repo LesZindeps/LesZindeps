@@ -35,7 +35,6 @@ import models.ZindepAvailabilitiesEntry;
 import notifiers.Mails;
 import play.Logger;
 import play.mvc.Controller;
-import play.mvc.Router;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -142,10 +141,9 @@ public class Application extends Controller {
 
             Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("id", availability.id);
-            String url = Router.reverse("Application.disponibilite", parameters).url;
 
-            entry.setLink(request.getBase() + url);
-            entry.setUri(request.getBase() + url);
+            entry.setLink(zindepModified.getProfileUrl());
+            entry.setUri(zindepModified.getProfileUrl());
             entry.setPublishedDate(availability.updateDate);
 
             SyndContent description = new SyndContentImpl();
@@ -188,7 +186,8 @@ public class Application extends Controller {
     public static void disponibilite(String id) {
         ZindepAvailabilitiesEntry entry = ZindepAvailabilitiesEntry.findById(id);
         if (entry != null) {
-            render(entry);
+            Zindep zindep = entry.lastZindepModified;
+            render(entry, zindep);
         } else {
             flash.error("identifiant de disponibilité erroné");
             index();
