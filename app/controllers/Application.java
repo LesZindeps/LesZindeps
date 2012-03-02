@@ -146,10 +146,29 @@ public class Application extends Controller {
             entry.setUri(zindepModified.getProfileUrl());
             entry.setPublishedDate(availability.updateDate);
 
+            //description
             SyndContent description = new SyndContentImpl();
             description.setType(TEXT_HTML_MIME_TYPE);
-            description.setValue(entry.getTitle() + "\n les autres zindeps disponibles sont....");
+            StringBuilder descriptionContent = new StringBuilder();
+            descriptionContent.append(entry.getTitle());
+            descriptionContent.append("<br/>les autres zindeps disponibles à plein temps sont:<br/>");
+            Set<Zindep> zindepsFullTime = availability.zindepsFullTime;
+            for (Zindep zindep : zindepsFullTime) {
+                descriptionContent.append("<a href=\"");
+                descriptionContent.append(zindep.getProfileUrl());
+                descriptionContent.append("\">");
+                descriptionContent.append(zindep.firstName);
+                descriptionContent.append(" ");
+                descriptionContent.append(zindep.lastName);
+                descriptionContent.append("</a>");
+                descriptionContent.append("<br/>");
+
+
+            }
+            description.setValue(descriptionContent.toString());
             entry.setDescription(description);
+
+
             List<SyndContent> contents = new ArrayList<SyndContent>();
             SyndContent content = new SyndContentImpl();
             content.setValue("blablabla");
