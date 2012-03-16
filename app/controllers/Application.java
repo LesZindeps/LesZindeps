@@ -139,9 +139,6 @@ public class Application extends Controller {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + N_EST_PLUS_DISPONIBLE);
             }
 
-            Map<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("id", availability.id);
-
             entry.setLink(zindepModified.getProfileUrl());
             entry.setUri(zindepModified.getProfileUrl());
             entry.setPublishedDate(availability.updateDate);
@@ -171,7 +168,6 @@ public class Application extends Controller {
 
             List<SyndContent> contents = new ArrayList<SyndContent>();
             SyndContent content = new SyndContentImpl();
-            content.setValue("blablabla");
             content.setType("html");//can be 'text', 'html', or 'xhtml'
             contents.add(content);
             entry.setContents(contents);
