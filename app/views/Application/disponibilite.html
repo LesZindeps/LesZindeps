@@ -1,0 +1,73 @@
+#{extends 'main.html' /}
+#{set title:'changement de disponibilité' /}
+
+<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/wufoo.css'}"/>
+<h1><a href="${entry.lastZindepModified.profileUrl}"> ${entry.lastZindepModified.firstName}
+    &nbsp;${entry.lastZindepModified.lastName}</a> a changé son statut à <span
+        class="${entry.previousAvailability}">'${entry.previousAvailability}'</span>.</h1>
+<h2>date de la modification: ${entry.updateDate.format("dd/MM/yyyy HH:mm")}</h2>
+<h2>précédent statut: '${entry.currentAvailability}'</h2>
+<h3>Domaines d'expertise</h3>
+<p align="justify">${entry.lastZindepModified.techno?.nl2br()}</p>
+
+<h2>Zindep ayant précédemment changé son statut</h2><a
+        href="${entry.lastZindepModified.profileUrl}">${entry.lastZindepModified.firstName} ${entry.lastZindepModified.lastName}</a>
+<br/>
+<h1>zindeps disponibles à plein temps</h1>
+<div class="grid_12">
+    <table class="dispoTable">
+        <thead>
+        <tr>
+            <th>nom</th>
+            <th>domaines d'expertises</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:entry.zindepsFullTime, as:'zindep'}
+        <tr>
+            <td><a href="${zindep.profileUrl}">${zindep.firstName} ${zindep.lastName}</a></td>
+            <td>${zindep.techno?.nl2br()}</td>
+        </tr>
+        #{/list}
+        </tbody>
+    </table>
+</div>
+<h1>zindeps disponibles à temps partiel</h1>
+<div class="grid_12">
+    <table class="dispoTable">
+        <thead>
+        <tr>
+            <th>nom</th>
+            <th>domaines d'expertises</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:entry.zindepsPartTime, as:'zindep'}
+        <tr>
+            <td><a href="${zindep.profileUrl}">${zindep.firstName} ${zindep.lastName}</a></td>
+            <td>${zindep.techno?.nl2br()}</td>
+        </tr>
+        #{/list}
+        </tbody>
+    </table>
+</div>
+<h1>zindeps non disponibles</h1>
+<div class="grid_12">
+    <table class="dispoTable">
+        <thead>
+        <tr>
+            <th>nom</th>
+            <th>domaines d'expertises</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:entry.zindepsNotAvailable, as:'zindep'}
+        <tr>
+            <td><a href="${zindep.profileUrl}">${zindep.firstName} ${zindep.lastName}</a></td>
+            <td>${zindep.techno?.nl2br()}</td>
+        </tr>
+        #{/list}
+        </tbody>
+    </table>
+</div>
+

@@ -185,6 +185,39 @@ a.selected {
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.dispoTable table {
+    width: 100%;
+    table-layout: auto;
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dispoTable th {
+    padding: 13px 6px 13px 6px;
+    border: 1px solid #dfdfdf;
+    background-color: #252525;
+    color: #fff;
+
+}
+
+.dispoTable td {
+    padding: 13px 6px 13px 6px;
+    border: 1px solid #d4d2d2
+
+}
+
+.dispoTable td.flex {
+    width: 269px
+}
+
+.dispoTable td.end, dispoTable th.end {
+    border-right: none
+}
+
+.dispoTable tr.even td {
+    background-color: #f4f4f4
+}
+
 /* ----------------------------------------------
 * ADD
 * ------------------------------------------- */

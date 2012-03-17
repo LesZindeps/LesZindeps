@@ -35,6 +35,7 @@ import models.ZindepAvailabilitiesEntry;
 import notifiers.Mails;
 import play.Logger;
 import play.mvc.Controller;
+import play.mvc.Router;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -139,8 +140,12 @@ public class Application extends Controller {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + N_EST_PLUS_DISPONIBLE);
             }
 
-            entry.setLink(zindepModified.getProfileUrl());
-            entry.setUri(zindepModified.getProfileUrl());
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("id", availability.id);
+            String url = Router.reverse("Application.disponibilite", parameters).url;
+
+            entry.setLink(request.getBase() + url);
+            entry.setUri(request.getBase() + url);
             entry.setPublishedDate(availability.updateDate);
 
             //description
