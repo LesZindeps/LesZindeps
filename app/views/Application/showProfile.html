@@ -3,12 +3,7 @@
 ${zindep.firstName} ${zindep.lastName}
 #{/set}
 <div class="grid_2">
-#{if zindep.pictureUrl && zindep.pictureUrl!='undefined'}
-    <img src="${zindep.pictureUrl}" alt="${zindep.firstName} ${zindep.lastName}" class="zindepPicture"/>
-#{/if}
-#{else}
-    <img src="@{'public/images/no_photo.png'}" alt="No picture yet"/>
-#{/else}
+#{zindepPictureUrl zindep:zindep /}
 </div>
 <div class="grid_8">
     <h1>${zindep.firstName} ${zindep.lastName}</h1>

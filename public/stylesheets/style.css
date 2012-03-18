@@ -197,6 +197,16 @@ a.selected {
     border: 1px solid #dfdfdf;
     background-color: #252525;
     color: #fff;
+    text-align: left;
+
+}
+
+.dispoTable>tbody th {
+    padding: 13px 6px 13px 6px;
+    border: 1px solid #dfdfdf;
+    color: #ffffff;
+    background-color: #2981E4;
+    text-align: left;
 
 }
 
@@ -216,6 +226,10 @@ a.selected {
 
 .dispoTable tr.even td {
     background-color: #f4f4f4
+}
+
+#zindepAvailabilityChange {
+    margin-bottom: 80px;
 }
 
 /* ----------------------------------------------

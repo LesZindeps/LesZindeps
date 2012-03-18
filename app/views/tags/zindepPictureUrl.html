@@ -1,0 +1,6 @@
+#{if _zindep.pictureUrl && _zindep.pictureUrl!='undefined'}
+<img src="${_zindep.pictureUrl}" alt="${_zindep.firstName} ${_zindep.lastName}" class="zindepPicture"/>
+#{/if}
+#{else}
+<img src="@{'public/images/no_photo.png'}" alt="No picture yet"/>
+#{/else}
