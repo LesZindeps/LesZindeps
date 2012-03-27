@@ -12,16 +12,19 @@ import play.test.Fixtures;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.hamcrest.core.Is.is;
 
 public class ApplicationTest extends ZindepFunctionalTest {
 
-    public static final String ZINDEP_NOT_AVAILABLE_EMAIL = "jimi@hendrix.com";
+    public static final String ZINDEP_AVAILABLE_FULL_TIME_EMAIL = "mark@knopfler.com";
 
     public static final String DATA_FOR_TESTS = "test-datas.yml";
     public static final String ATOM_CONTENT_TYPE = "application/atom+xml";
     public static final int OK = 200;
+    public static final String URL_PREFIX_NOT_HANDLED_BY_FUNCTIONAL_TEST = "http://localhost";
 
     @Before
     public void setUp() {
@@ -55,7 +58,7 @@ public class ApplicationTest extends ZindepFunctionalTest {
     @Test
     public void testDisponibilites_nominal_case() throws IOException, FeedException {
         //given
-        Http.Request request = authenticateAndPopulateSession(ZINDEP_NOT_AVAILABLE_EMAIL);
+        Http.Request request = authenticateAndPopulateSession(ZINDEP_AVAILABLE_FULL_TIME_EMAIL);
 
         SyndFeed feed = getFeed(request);
         assertThat(feed.getEntries().size(), is(0));
@@ -67,11 +70,11 @@ public class ApplicationTest extends ZindepFunctionalTest {
         Http.Request newRequest = setSessionWithNewRequest(session);
         Http.Response responseShowMyProfile = GET(newRequest, "/admin/showMyProfile");
         assertThat("response code for request /admin/showMyProfile " + responseShowMyProfile.status.toString() + " location=" + responseShowMyProfile.getHeader("Location"), responseShowMyProfile.status, is(200));
-
+        String content = responseShowMyProfile.out.toString("UTF-8");
         request = setSessionWithNewRequest(session);
         //change availability and save
 
-        request.params.put("zindep.currentAvailability", "FULL_TIME");
+        request.params.put("zindep.currentAvailability", "PART_TIME_ONLY");
         request.params.put("zindep.id", session.get("zindepId"));
         Http.Response response = POST(request, "/admin/doUpdateMyProfile");
         session = Scope.Session.current();
@@ -80,14 +83,17 @@ public class ApplicationTest extends ZindepFunctionalTest {
         assertThat(response.getHeader("Location"), is("/admin/showmyprofile"));
         SyndFeed feed2 = getFeed(setSessionWithNewRequest(session));
         assertThat(feed2.getEntries().size(), is(1));
+        Collection<String> links = new ArrayList<String>();
         for (Object entry : feed2.getEntries()) {
             SyndEntry myEntry = (SyndEntry) entry;
             String link = myEntry.getLink();
-
+            links.add(link);
+        }
+        for (String link : links) {
+            link = link.replaceFirst(URL_PREFIX_NOT_HANDLED_BY_FUNCTIONAL_TEST, "");
             Response dispoResponse = GET(setSessionWithNewRequest(session), link);
             assertThat(dispoResponse.status, is(200));
             String dispoContent = dispoResponse.out.toString("UTF-8");
-
         }
     }
 

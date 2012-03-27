@@ -63,6 +63,8 @@ public class Application extends Controller {
     public static final String LES_ZINDEPS_AUTHOR_NAME = "Les Zindeps";
     public static final String LES_ZINDEPS_WEB_SITE = "http://www.leszindeps.fr";
     public static final String LES_ZINDEPS_EMAIL = "contact@leszindeps.fr";
+    public static final int ATOM_FEED_SIZE_LIMIT = 25;
+    public static final String ORDER_BY_UPDATE_DATE_DESC = "order by updateDate desc";
 
     /**
      * Page d'accueil du site.
@@ -109,7 +111,7 @@ public class Application extends Controller {
         feed.setUri(feedUrl);
         feed.setPublishedDate(new Date());
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
-        List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.findAll();
+        List<ZindepAvailabilitiesEntry> all = ZindepAvailabilitiesEntry.find(ORDER_BY_UPDATE_DATE_DESC).fetch(ATOM_FEED_SIZE_LIMIT);
         for (ZindepAvailabilitiesEntry availability : all) {
             SyndEntry entry = new SyndEntryImpl();
 
