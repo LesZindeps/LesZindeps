@@ -129,7 +129,8 @@ public class Zindep extends GenericModel {
     public String emailBackup;
 
     public String linkedInId;
-    @Required(message = "Ce champ est obligatoire")
+    
+    @Required(message = "L'URL d'une image est obligatoire")
     @URL
     public String pictureUrl;
 
