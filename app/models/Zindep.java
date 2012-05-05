@@ -27,6 +27,8 @@
 package models;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
 import play.Logger;
 import play.data.validation.Email;
 import play.data.validation.MaxSize;
@@ -108,6 +110,7 @@ public class Zindep extends GenericModel {
 
     @Required(message = "Ce champ est obligatoire")
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String location;
 
     @Lob
@@ -118,10 +121,12 @@ public class Zindep extends GenericModel {
 
     // Correspond au champ summary de LinkedIn
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String bio;
 
     // Correspond au champ specialties de LinkedIn
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String techno;
 
     @Email

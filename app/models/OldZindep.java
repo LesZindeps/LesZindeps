@@ -36,6 +36,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+
 import java.util.Date;
 
 /**
@@ -66,14 +69,17 @@ public class OldZindep extends GenericModel {
 
     @Required(message = "Ce champ est obligatoire")
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String location;
 
     // Correspond au champ summary de LinkedIn
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String bio;
 
     // Correspond au champ specialties de LinkedIn
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     public String techno;
 
     @Email

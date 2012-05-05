@@ -33,6 +33,9 @@ import play.db.jpa.JPA;
 import play.db.jpa.Model;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Type;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +79,7 @@ public class Mission extends Model {
 
     @Lob
     @MaxSize(10000)
+    @Type(type = "org.hibernate.type.TextType")
     public String comment;
 
     @Required

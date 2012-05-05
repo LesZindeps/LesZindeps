@@ -26,6 +26,7 @@
 
 package models;
 
+import org.hibernate.annotations.Type;
 import org.joda.time.DateMidnight;
 import play.data.validation.Email;
 import play.data.validation.Max;
@@ -63,6 +64,7 @@ public class Propal extends Model {
 
     @Lob
     @Required(message = "Nous avons vraiment besoin d'une description pour répondre à votre demande")
+    @Type(type = "org.hibernate.type.TextType")
     public String description;
 
     @Required(message = "Veuillez indiquer le lieu d'exécution de la mission")
