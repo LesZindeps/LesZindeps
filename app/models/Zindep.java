@@ -116,6 +116,7 @@ public class Zindep extends GenericModel {
     @Lob
     // permet d'indexer simplement
     @Column(name = "zindep_index")
+    @Type(type = "org.hibernate.type.TextType")
     public String index;
 
 

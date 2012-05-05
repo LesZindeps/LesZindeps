@@ -134,9 +134,9 @@ public class Application extends Controller {
             entry.setAuthors(entryAuthors);
 
             //title
-            if (availability.currentAvailability.equals(Zindep.Availability.FULL_TIME)) {
+            if (Zindep.Availability.FULL_TIME.equals(availability.currentAvailability)) {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + EST_DISPONIBLE_A_PLEIN_TEMPS);
-            } else if (availability.currentAvailability.equals(Zindep.Availability.PART_TIME_ONLY)) {
+            } else if (Zindep.Availability.PART_TIME_ONLY.equals(availability.currentAvailability)) {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + EST_DISPONIBLE_A_TEMPS_PARTIEL);
             } else {
                 entry.setTitle(zindepModified.firstName + " " + zindepModified.lastName + N_EST_PLUS_DISPONIBLE);
