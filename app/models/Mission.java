@@ -148,12 +148,18 @@ public class Mission extends Model {
     }
 
     public static List findStatistics(String poste, String intermediary, String customer, String region) {
-        Query query = JPA.em().createQuery("select AVG(exp), AVG(clientPrice), AVG(length) from Mission m " +
+    	// pas élégant mais ce fut ma seule trouvaille lors du passage à postgresql pour que ca fonctionne
+    	poste = poste == null ? "" : poste;
+    	intermediary = intermediary == null ? "" : intermediary;
+    	customer = customer == null ? "" : customer;
+    	region = region == null ? "" : region;
+    	
+    	Query query = JPA.em().createQuery("select AVG(exp), AVG(clientPrice), AVG(length) from Mission m " +
                 "where " +
-                " (:role is null or role = :role)" +
-                " AND (:intermediary is null or intermediary = :intermediary)" +
-                " AND (:customer is null or customer = :customer)" +
-                " AND (:region is null or location = :region)")
+                " (:role ='' or role = :role)" +
+                " AND (:intermediary ='' or intermediary = :intermediary)" +
+                " AND (:customer ='' or customer = :customer)" +
+                " AND (:region ='' or location = :region)")
                 .setParameter("role", poste)
                 .setParameter("role", poste)
                 .setParameter("intermediary", intermediary)
@@ -166,12 +172,18 @@ public class Mission extends Model {
     }
 
     public static List findPriceByExperience(String poste, String intermediary, String customer, String region) {
+    	// pas élégant mais ce fut ma seule trouvaille lors du passage à postgresql pour que ca fonctionne
+    	poste = poste == null ? "" : poste;
+    	intermediary = intermediary == null ? "" : intermediary;
+    	customer = customer == null ? "" : customer;
+    	region = region == null ? "" : region;
+    	
         Query query = JPA.em().createQuery("select exp, AVG(clientPrice) from Mission m " +
                 "where " +
-                " (:role is null or role = :role)" +
-                " AND (:intermediary is null or intermediary = :intermediary)" +
-                " AND (:customer is null or customer = :customer)" +
-                " AND (:region is null or location = :region)" +
+                " (:role ='' or role = :role)" +
+                " AND (:intermediary ='' or intermediary = :intermediary)" +
+                " AND (:customer ='' or customer = :customer)" +
+                " AND (:region ='' or location = :region)" +
                 " GROUP BY exp")
                 .setParameter("role", poste)
                 .setParameter("role", poste)
