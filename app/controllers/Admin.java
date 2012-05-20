@@ -162,7 +162,6 @@ public class Admin extends Controller {
         }
 
         render(zindep); // cette variable zindep est celle utilisee dans la page HTML directement
-
     }
 
     /**
@@ -250,7 +249,6 @@ public class Admin extends Controller {
         render();
     }
 
-
     /**
      * Affiche la liste des propals.
      */
@@ -259,8 +257,24 @@ public class Admin extends Controller {
         render(listOfPropals);
     }
 
-
     public static void importFromLinkedIn() {
+        String id = session.get(ZINDEP_ID);
+        if (id == null) {
+            error("Probleme avec l'authentification");
+        }
+
+        Zindep zindep = Zindep.findById(id);
+        if (zindep == null) {
+            error("Zindep non trouvé");
+        }
+
+        render();
+    }
+
+    /**
+     *
+     */
+    public static void javascriptWidget() {
         String id = session.get(ZINDEP_ID);
         if (id == null) {
             error("Probleme avec l'authentification");

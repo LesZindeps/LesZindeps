@@ -4,14 +4,16 @@
 <head>
     <title>#{get 'pageTitle' /} ★ Les Zindeps</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
     <link rel="stylesheet" type="text/css" media="screen" href="@{'public/stylesheets/style.css'}">
     <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/grid.css'}">
     <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.ico'}">
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/south-street/jquery-ui.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/south-street/jquery-ui.css"/>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="http://cloud.github.com/downloads/jaubourg/jquery-jsonp/jquery.jsonp-2.3.0.min.js"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/zindep-dispo.min.js'}"></script>
 
 #{get 'moreScripts' /}
 
@@ -29,6 +31,7 @@
 <div class="grid_3 adminLeftNav">
     #{a @Admin.showMyProfile(), class:'button small'}Mettre à jour mon profil#{/a} <br/>
     #{a @Admin.importFromLinkedIn(), class:'button small'}Importer mon profil de LinkedIn#{/a}<br/>
+    #{a @Admin.javascriptWidget(), class:'button small'}Ajouter un widget sur mon blog#{/a}<br/>
     #{a @Admin.listPropals(), class:'button small'}Proposition de mission#{/a}<br/>
     #{a @AdminDecisions.index(), class:'button small'}Historique des décisions#{/a}<br/>
     #{a @AdminMissions.showMissions(), class:'button small'}Base de tarifs#{/a}<br/>

@@ -25,21 +25,22 @@
 #
 GET     /                                       Application.index
 
-GET /p/{firstName}/{lastName}/{id} Application.showProfile
+GET     /p/{firstName}/{lastName}/{id}.jsonp    Application.showProfileJSONP
+GET     /p/{firstName}/{lastName}/{id}          Application.showProfile
 
-GET /qui            Application.qui
+GET     /qui                                    Application.qui
 
 #flux atom des disponibilites
-GET /disponibilites.atom       Application.disponibilites(format:'application/atom+xml')
+GET     /disponibilites.atom                    Application.disponibilites(format:'application/atom+xml')
 
-GET /disponibilite/{id}       Application.disponibilite
+GET     /disponibilite/{id}                     Application.disponibilite
 
-GET /mission        Application.mission
-POST    /submitMission     Application.submitMission
+GET     /mission                                Application.mission
+POST    /submitMission                          Application.submitMission
 
 #permet d'activer le hack pour s'authentifier avec cette url
 %{ if (play.mode.isDev()) { }%
-GET /authenticateas/{userEmail} Admin.authenticateAs
+GET     /authenticateas/{userEmail}             Admin.authenticateAs
 %{ } }%
 
 

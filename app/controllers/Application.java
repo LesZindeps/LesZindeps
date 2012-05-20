@@ -26,6 +26,7 @@
 
 package controllers;
 
+import com.google.gson.Gson;
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
@@ -275,6 +276,23 @@ public class Application extends Controller {
             qui();
         }
         render(zindep);
+    }
+
+    /**
+     * Affiche un profil au format JSONP pour appel cross-domain nécessaire pour le widget Javascript.
+     *
+     * @param id        est vraiment utilisé pour charger la fiche
+     * @param firstName ne sert pas mais permet de creer une URL propre dans routes
+     * @param lastName  ne sert pas mais permet de creer une URL propre dans routes
+     */
+    public static void showProfileJSONP(String id, String firstName, String lastName) {
+        Zindep zindep = Zindep.findById(id);
+        if (zindep == null) {
+            renderText("zindepCallback()");
+        }
+        zindep.missions = null;
+        String zindepAsJSON = new Gson().toJson(zindep);
+        renderText("zindepCallback(" + zindepAsJSON.replaceAll("'", "\'") + ")");
     }
 
     /**

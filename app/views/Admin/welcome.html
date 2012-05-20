@@ -1,32 +1,30 @@
 #{extends 'Admin/adminTemplate.html' /}
 #{set title:'Bienvenue' /}
 
-    <h1>Ma page perso</h1>
-    <P>Bienvenue dans votre espace privé.</P>
-        <P>Pour débuter, importez votre profil LinkedIn en quelques minutes.</P>
-        <P>Vous pouvez ensuite référencer les missions que vous avez effectué, afin de construire
-        une base de connaissances.</P>
-    #{ifErrors}
-    <div class="error">
-        <h2>Erreur</h2>
-        <ul>
-            #{errors}
-            <li>${error}</li>
-            #{/errors}
-        </ul>
-    </div>
-    #{/ifErrors}
+<h1>Ma page perso</h1>
+<P>Bienvenue dans votre espace privé.</P>
+    <P>Pour débuter, importez votre profil LinkedIn en quelques minutes.</P>
+    <P>Vous pouvez ensuite référencer les missions que vous avez effectué, afin de construire
+    une base de connaissances.</P>
+#{ifErrors}
+<div class="error">
+    <h2>Erreur</h2>
+    <ul>
+        #{errors}
+        <li>${error}</li>
+        #{/errors}
+    </ul>
+</div>
+#{/ifErrors}
 
-    #{if flash.error}
-    <div class="error">
-        <h2>${flash.error}</h2>
-    </div>
-    #{/if}
+#{if flash.error}
+<div class="error">
+    <h2>${flash.error}</h2>
+</div>
+#{/if}
 
-    #{if flash.success}
-    <div class="successbox">
-        ${flash.success}
-    </div>
-    #{/if}
-
-
+#{if flash.success}
+<div class="successbox">
+    ${flash.success}
+</div>
+#{/if}
