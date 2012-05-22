@@ -1,0 +1,41 @@
+#{extends 'Admin/adminTemplate.html' /}
+#{set pageTitle:'Widget Javascript' /}
+
+<h1>Widget Javascript pour votre site Web :</h1>
+<br />
+<br />
+
+<p>Ajoutez les scripts suivants dans le <i>&lt;head&gt;</i> ou en bas de page <i>(jQuery 1.5 minimum)</i> :</p>
+<br />
+<textarea rows="4" cols="110">
+    &lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="http://cloud.github.com/downloads/jaubourg/jquery-jsonp/jquery.jsonp-2.3.0.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="@@{'/public/javascripts/zindep-dispo.min.js'}"&gt;&lt;/script&gt;
+</textarea>
+<br />
+<br />
+<br />
+
+<p>Ajoutez ce div à l'emplacement souhait&eacute; <i>(vous pouvez configurer la largeur du widget avec data-width, valeur en pixel)</i> :</p>
+<br />
+<textarea rows="2" cols="120">
+    &lt;div id="zindepWidget" data-profil="@@{Application.showProfile(zindep.id, zindep.firstName, zindep.lastName)}" data-width="200"&gt;&lt;/div&gt;
+</textarea>
+<br />
+<br />
+<br />
+
+<p>R&eacute;sultat avec data-width=200 :</p>
+<br />
+<div id="zindepWidget" data-profil="@@{Application.showProfile(zindep.id, zindep.firstName, zindep.lastName)}" data-width="200"></div>
+
+<script type="text/javascript">
+    $("textarea").focus(function() {
+        $this = $(this);
+        $this.select();
+        $this.mouseup(function() {
+            $this.unbind("mouseup");
+            return false;
+        });
+    });
+</script>
