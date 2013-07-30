@@ -241,8 +241,17 @@ public class Application extends Controller {
             mission();
         }
 
+        sendNewMissionNotification(propal);
+
         flash.success("Merci d'avoir proposé une mission.");
         render();
+    }
+
+    private static void sendNewMissionNotification(Propal propal) {
+        List<Zindep> listOfVisibles = Zindep.findAllVisibleByName();
+        for (Zindep z : listOfVisibles) {
+            Mails.sendNewMissionToUser(propal, z.email);
+        }
     }
 
     /**

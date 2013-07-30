@@ -1,0 +1,16 @@
+Message envoyé via le site des Zindeps
+=======================================
+
+Bonjour,
+
+Un visiteur (${propal.contact}) vient de poster une nouvelle mission sur le site : ${propal.title}
+Cette mission se déroule à ${propal.localisation} #{if propal.tjm} sur une fourchette de tarif : ${propal.tjm}#{/if}
+Description:
+
+   ${propal.description}
+
+#{if propal.phone}
+    ${propal.contact} peut aussi être contacté par téléphone au ${propal.phone}
+#{/if}
+
+

@@ -53,7 +53,6 @@ public class Mails extends Mailer {
         } else {
             Logger.error("Email invalide " + email);
         }
-
     }
 
     public static void sendPropalDeletedMessage(Propal deprecatedPropal, String email) {
@@ -76,6 +75,18 @@ public class Mails extends Mailer {
         if (result.ok) {
             addRecipient(email);
             send(deprecatedPropal);
+        } else {
+            Logger.error("Email invalide " + email);
+        }
+    }
+
+    public static void sendNewMissionToUser(Propal propal, String email) {
+        setSubject("Nouvelle mission reçu via le site des zindeps");
+        setFrom("zindeps@gmail.com");
+        Validation.ValidationResult result = Validation.email("Email invalide", email);
+        if (result.ok) {
+            addRecipient(email);
+            send(propal);
         } else {
             Logger.error("Email invalide " + email);
         }
