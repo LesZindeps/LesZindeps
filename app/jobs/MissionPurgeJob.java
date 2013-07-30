@@ -46,11 +46,15 @@ public class MissionPurgeJob extends Job {
         for (Propal deprecatedPropal : propals) {
             Validation.ValidationResult result = Validation.email("Email invalide", deprecatedPropal.contact);
             if (result.ok) {
-                Mails.sendPropalDeletedMessage(deprecatedPropal, deprecatedPropal.contact);
-                List<Zindep> listOfVisibles = Zindep.findAllVisibleByName();
-                for (Zindep z : listOfVisibles) {
-                    Mails.sendDeprecatedPropalToZindep(deprecatedPropal, z.email);
-                }
+
+                // FIXME désactivation temporaire des mails envoyés en cas de propal supprimé
+                // a voir pour le contenu du mail et la nécessité d'envoyer ce type de mail
+
+//                Mails.sendPropalDeletedMessage(deprecatedPropal, deprecatedPropal.contact);
+//                List<Zindep> listOfVisibles = Zindep.findAllVisibleByName();
+//                for (Zindep z : listOfVisibles) {
+//                    Mails.sendDeprecatedPropalToZindep(deprecatedPropal, z.email);
+//                }
             }else{
                 play.Logger.debug("Email invalide dans une Propal " + deprecatedPropal.contact);
             }
