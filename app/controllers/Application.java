@@ -248,8 +248,11 @@ public class Application extends Controller {
     }
 
     private static void sendNewMissionNotification(Propal propal) {
+        // TODO : prendre en compte un flag d'abonnement pour permettre aux gens de ne pas recevoir ces mails s'ils
+        // le souhaitent
         List<Zindep> listOfVisibles = Zindep.findAllVisibleByName();
         for (Zindep z : listOfVisibles) {
+            // FIXME envoyer un seul mail pour tout le monde pour éviter de plomber le quota mailjet
             Mails.sendNewMissionToUser(propal, z.email);
         }
     }
