@@ -45,7 +45,7 @@ public class Mails extends Mailer {
 
     public static void sendMessageToUser(String message, String email) {
         setSubject("Message envoyé via le site des zindeps");
-        setFrom("contact@leszindeps.fr");
+        setFrom("zindeps@gmail.com");
         Validation.ValidationResult result = Validation.email("Email invalide", email);
         if (result.ok) {
             addRecipient(email);
