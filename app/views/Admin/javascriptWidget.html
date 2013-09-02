@@ -1,6 +1,11 @@
 #{extends 'Admin/adminTemplate.html' /}
 #{set pageTitle:'Widget Javascript' /}
 
+#{set 'moreScripts'}
+<script type="text/javascript" src="http://cloud.github.com/downloads/jaubourg/jquery-jsonp/jquery.jsonp-2.3.0.min.js"></script>
+<script type="text/javascript" src="@{'/public/javascripts/zindep-dispo.min.js'}"></script>
+#{/set}
+
 <h1>Widget Javascript pour votre site Web :</h1>
 <br />
 <br />
