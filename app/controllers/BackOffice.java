@@ -28,6 +28,7 @@ package controllers;
 
 import models.OldZindep;
 import models.Zindep;
+import models.ZindepAvailabilitiesEntry;
 import play.data.validation.Valid;
 import play.mvc.Before;
 import play.mvc.Controller;
@@ -105,7 +106,7 @@ public class BackOffice extends Controller {
 		boolean created = newOldZindep.create();
 		
 		if (created) {
-			zindep.delete();
+            deleteZindep(zindep);
 	
 			flash.success("Nouvel indépendant archivé");
 		} else {
@@ -115,7 +116,12 @@ public class BackOffice extends Controller {
 		listZindeps();
 	}
 
-	/**
+    protected static void deleteZindep(Zindep zindep) {
+        ZindepAvailabilitiesEntry.delete(zindep);
+        zindep.delete();
+    }
+
+    /**
 	 * Restore a zindep.
 	 * @param id zindep to restore
 	 */

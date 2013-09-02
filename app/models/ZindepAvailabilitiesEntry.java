@@ -27,10 +27,12 @@ package models;
 
 import org.hibernate.annotations.GenericGenerator;
 import play.db.jpa.GenericModel;
+import play.db.jpa.JPABase;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -73,4 +75,45 @@ public class ZindepAvailabilitiesEntry extends GenericModel {
     public Set<Zindep> zindepsNotAvailable = new HashSet<Zindep>();
 
 
+    public void removeZindepFromListsAndSaveIt(Zindep zindep) {
+        zindepsPartTime.remove(zindep);
+        zindepsFullTime.remove(zindep);
+        zindepsNotAvailable.remove(zindep);
+
+        save();
+    }
+
+    @Override
+    public <T extends JPABase> T delete() {
+        clearLists();
+        return super.delete();
+    }
+
+    private void clearLists() {
+        zindepsPartTime.clear();
+        zindepsFullTime.clear();
+        zindepsNotAvailable.clear();
+    }
+
+    public static void delete(Zindep zindep) {
+        removeZindepFromAllZindepAvailabilitiesEntry(zindep);
+        deleteZindepAvailabilitiesEntry(zindep);
+    }
+
+    private static void deleteZindepAvailabilitiesEntry(Zindep zindep) {
+        String query = "from ZindepAvailabilitiesEntry z where z.lastZindepModified.id = ?";
+        List<ZindepAvailabilitiesEntry> toDeleteEntry = find(query, zindep.id).fetch();
+
+        for (ZindepAvailabilitiesEntry entry : toDeleteEntry) {
+            entry.delete();
+        }
+    }
+
+    private static void removeZindepFromAllZindepAvailabilitiesEntry(Zindep zindep) {
+        //Clean FK
+        List<ZindepAvailabilitiesEntry> allZindepAvailabilitiesEntry = findAll();
+        for (ZindepAvailabilitiesEntry entry  : allZindepAvailabilitiesEntry) {
+            entry.removeZindepFromListsAndSaveIt(zindep);
+        }
+    }
 }
