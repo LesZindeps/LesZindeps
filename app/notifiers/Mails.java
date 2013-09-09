@@ -69,7 +69,7 @@ public class Mails extends Mailer {
 
     public static void sendDeprecatedPropalToZindep(Propal deprecatedPropal, String email) {
         String cleanTitle = StringUtils.abbreviate(deprecatedPropal.title, 35);
-        setSubject("Propal sur le site des Zindeps ayant expirée " + cleanTitle);
+        setSubject("Propale sur le site des Zindeps ayant expiré " + cleanTitle);
         setFrom("contact@leszindeps.fr");
         Validation.ValidationResult result = Validation.email("Email invalide", email);
         if (result.ok) {
@@ -81,7 +81,7 @@ public class Mails extends Mailer {
     }
 
     public static void sendNewMissionToUser(Propal propal, String email) {
-        setSubject("Nouvelle mission reçu via le site des zindeps");
+        setSubject("Nouvelle mission reçue via le site des zindeps");
         setFrom("zindeps@gmail.com");
         Validation.ValidationResult result = Validation.email("Email invalide", email);
         if (result.ok) {
