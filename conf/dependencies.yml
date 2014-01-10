@@ -1,5 +1,5 @@
 require:
    - play 1.2.3
-   - com.google.guava -> guava r09
+   - com.google.guava -> guava 15.0
    - rome -> rome 1.0
-   - org.mockito -> mockito-core 1.9.0-rc1
+   - org.mockito -> mockito-core 1.9.5
