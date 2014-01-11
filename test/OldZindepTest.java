@@ -9,25 +9,19 @@ import play.test.UnitTest;
 
 import java.util.List;
 
-/**
- */
 public class OldZindepTest extends UnitTest {
 
 
     @Before
-       public void setUp(){
-          Fixtures.deleteAllModels();
-          Fixtures.loadModels("test-datas.yml");
-       }
+    public void setUp() {
+        Fixtures.deleteAllModels();
+        Fixtures.loadModels("test-datas.yml");
+    }
 
     @After
-    public void tearsDown(){
-           Fixtures.deleteAllModels();
-       }
-
-        
-
-
+    public void tearsDown() {
+        Fixtures.deleteAllModels();
+    }
 
     @Test
     public void createAndFindAll() {

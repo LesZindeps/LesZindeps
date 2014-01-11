@@ -20,7 +20,6 @@ import static org.hamcrest.core.Is.is;
 public class ApplicationTest extends ZindepFunctionalTest {
 
     public static final String ZINDEP_AVAILABLE_FULL_TIME_EMAIL = "mark@knopfler.com";
-
     public static final String DATA_FOR_TESTS = "test-datas.yml";
     public static final String ATOM_CONTENT_TYPE = "application/atom+xml";
     public static final int OK = 200;
@@ -48,7 +47,6 @@ public class ApplicationTest extends ZindepFunctionalTest {
         assertThat(response.getHeader("Location"), is("/admin/index"));
     }
 
-
     @Test
     public void testThatBackofficePageIsProtected() {
         Response response = GET("/backoffice/index");
@@ -70,7 +68,6 @@ public class ApplicationTest extends ZindepFunctionalTest {
         Http.Request newRequest = setSessionWithNewRequest(session);
         Http.Response responseShowMyProfile = GET(newRequest, "/admin/showMyProfile");
         assertThat("response code for request /admin/showMyProfile " + responseShowMyProfile.status.toString() + " location=" + responseShowMyProfile.getHeader("Location"), responseShowMyProfile.status, is(200));
-        String content = responseShowMyProfile.out.toString("UTF-8");
         request = setSessionWithNewRequest(session);
         //change availability and save
 
@@ -93,7 +90,6 @@ public class ApplicationTest extends ZindepFunctionalTest {
             link = link.replaceFirst(URL_PREFIX_NOT_HANDLED_BY_FUNCTIONAL_TEST, "");
             Response dispoResponse = GET(setSessionWithNewRequest(session), link);
             assertThat(dispoResponse.status, is(200));
-            String dispoContent = dispoResponse.out.toString("UTF-8");
         }
     }
 

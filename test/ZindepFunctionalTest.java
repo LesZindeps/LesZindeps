@@ -11,7 +11,6 @@ import play.test.FunctionalTest;
 import javax.persistence.TypedQuery;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * base test for functional Tests.
@@ -23,22 +22,16 @@ public class ZindepFunctionalTest extends FunctionalTest {
     public static final boolean COOKIE_SECURE = Play.configuration.getProperty("application.session.secure", "false").toLowerCase().equals("true");
     public static final String COOKIE_EXPIRE = Play.configuration.getProperty("application.session.maxAge");
     public static final boolean SESSION_HTTPONLY = Play.configuration.getProperty("application.session.httpOnly", "false").toLowerCase().equals("true");
-    public static final boolean SESSION_SEND_ONLY_IF_CHANGED = Play.configuration.getProperty("application.session.sendOnlyIfChanged", "false").toLowerCase().equals("true");
-    static Pattern sessionParser = Pattern.compile("\u0000([^:]*):([^\u0000]*)\u0000");
-    static final String TIMESTAMP_KEY = "___TS";
     public static final String AUTHENTICITY_TOKEN_KEY = "___AT";
     public static final String ZINDEP_WITHOUT_PICTURE_URL_EMAIL = "pierre@letesteur.fr";
     public static final String PICTURE_ON_LINKED_IN = "http://media.linkedin.com/mpr/mprx/0_-vl8EBrjrIhgK-YHrn30Eqi1rwQtKlmHKN50EqACfmtC7zMeYPTuXN5uOL6S1n7X1nPY5Pfgv14Y";
     public static final String ZINDEP_ID_SESSION_KEY = "zindepId";
     public static final String ZINDEP_EMAIL_SESSION_KEY = "zindepEmail";
     public static final String ZINDEP_PICTURE_URL_SESSION_KEY = "zindep.pictureUrl";
-
+    static final String TIMESTAMP_KEY = "___TS";
 
     /**
      * store Session in cookie request and response, and set the authenticityToken into param form.
-     *
-     * @param session
-     * @return
      */
     public Http.Request setSessionWithNewRequest(Scope.Session session) {
         Http.Request request = newRequest();
@@ -51,8 +44,6 @@ public class ZindepFunctionalTest extends FunctionalTest {
     /**
      * save session into the Http.Response.current() response.
      * this code comes from play! framework code.
-     *
-     * @param ses
      */
     private void saveSessionInCurrentRequest(Scope.Session ses) {
         Map<String, String> data = ses.all();
@@ -107,7 +98,6 @@ public class ZindepFunctionalTest extends FunctionalTest {
      *
      * @param zindepId    id of Zindep
      * @param zindepEmail email of the zindep successfully authenticated
-     * @return
      */
     private Http.Request setOpenIDAuthenticationSucess(String zindepId, String zindepEmail) {
         Scope.Session session = Scope.Session.current();
@@ -137,10 +127,6 @@ public class ZindepFunctionalTest extends FunctionalTest {
 
     /**
      * authenticate a zindep which does not have a picture in its profile.
-     *
-     * @param zindepEmailWithoutPictureUrl
-     * @param zindepId
-     * @return
      */
     private Http.Request authenticateAndPopulateProfileFormForFacelessUser(String zindepEmailWithoutPictureUrl, String zindepId) {
         Http.Request request = setOpenIDAuthenticationSucess(zindepId, zindepEmailWithoutPictureUrl);

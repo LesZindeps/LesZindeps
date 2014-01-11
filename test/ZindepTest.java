@@ -26,7 +26,6 @@ public class ZindepTest extends UnitTest {
 
     }
 
-
     @Test
     public void shouldReturns4ZindepForFindAllVisibleByName() {
 
@@ -57,7 +56,6 @@ public class ZindepTest extends UnitTest {
         assertEquals("Pierre", result3.firstName);
         assertEquals("Letesteur", result3.lastName);
     }
-
 
     @Test
     public void testFindAllByAvailability_nominal_case() {
@@ -103,7 +101,6 @@ public class ZindepTest extends UnitTest {
 
     }
 
-
     @Test
     public void testFindAllByAvailability_with_removal_of_one_zindep() {
         List<Zindep> zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
@@ -126,7 +123,6 @@ public class ZindepTest extends UnitTest {
         zindepsNotAvailable = Zindep.findAllByAvailability(Zindep.Availability.NOT_AVAILABLE);
         assertThat(zindepsNotAvailable.size(), is(7));
     }
-
 
     @Test
     public void testZindepAvailabilitiesEntry_creation() {
@@ -155,7 +151,6 @@ public class ZindepTest extends UnitTest {
         assertThat(entry.previousAvailability, is(Zindep.Availability.FULL_TIME));
 
     }
-
 
     @Test
     public void test_setCurrentAvailability_nominal_case() {

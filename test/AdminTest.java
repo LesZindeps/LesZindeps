@@ -7,17 +7,12 @@ public class AdminTest extends ZindepFunctionalTest {
 
     public static final String ADMIN_SHOW_MY_PROFILE = "/admin/showmyprofile";
     public static final String LOCATION_HEADER = "Location";
-
     public static final String DATA_FOR_TESTS = "test-datas.yml";
 
     @Before
     public void setUp() {
         Fixtures.deleteAllModels();
         Fixtures.loadModels(DATA_FOR_TESTS);
-
-    }
-
-    public void tearsDown() {
     }
 
     @Test
@@ -28,7 +23,6 @@ public class AdminTest extends ZindepFunctionalTest {
         assertStatus(200, response);
     }
 
-
     @Test
     public void testThatValidationRulesOKWhenPictureUrlIsPresent() {
         Http.Request request = authenticateAndPopulateSession(ZINDEP_WITHOUT_PICTURE_URL_EMAIL);
@@ -37,6 +31,5 @@ public class AdminTest extends ZindepFunctionalTest {
         String redirectValue = response.headers.get(LOCATION_HEADER).values.get(0);
         assertTrue("redirect to  " + redirectValue + " instead of " + ADMIN_SHOW_MY_PROFILE, redirectValue.equals(ADMIN_SHOW_MY_PROFILE));
     }
-
 
 }

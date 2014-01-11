@@ -11,7 +11,7 @@ import java.util.List;
 
 public class BackOfficeTest extends FunctionalTest {
     @Before
-    public void setUp(){
+    public void setUp() {
         Fixtures.deleteAllModels();
         Fixtures.loadModels("test-datas.yml");
 
@@ -33,7 +33,7 @@ public class BackOfficeTest extends FunctionalTest {
     @Test
     public void deleteZindeps_should_work_for_all() {
         List<Zindep> result = Zindep.findAll();
-        for(Zindep z : result) {
+        for (Zindep z : result) {
             BackOffice.deleteZindep(z);
         }
     }
