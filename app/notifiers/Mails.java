@@ -43,15 +43,15 @@ import play.mvc.*;
 
 public class Mails extends Mailer {
 
-    public static void sendMessageToUser(String message, String email) {
+    public static void sendMessageToUser(String message, String emailTo, String emailFrom) {
         setSubject("Message envoyé via le site des zindeps");
-        setFrom("zindeps@gmail.com");
-        Validation.ValidationResult result = Validation.email("Email invalide", email);
+        setFrom(emailFrom);
+        Validation.ValidationResult result = Validation.email("Email invalide", emailTo);
         if (result.ok) {
-            addRecipient(email);
+            addRecipient(emailTo);
             send(message);
         } else {
-            Logger.error("Email invalide " + email);
+            Logger.error("Email invalide " + emailTo);
         }
     }
 
