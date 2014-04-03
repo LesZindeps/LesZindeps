@@ -117,7 +117,16 @@
 			</p>
             <br/><span class="error">${field.error}</span><br/>
         </li>
-        #{/}	
+        #{/}
+        <li>
+            <label class="desc" for="code">Désolé, voici l'incontournable captcha qui nous permet de nous protéger du spam <span id="req_code" class="req">*</span></label>
+            <img src="@{Application.captcha(randomID)}" />
+            <br />
+            <div><input type="text" name="code" id="code" value="" class="field text large" maxlength="255"/></div>
+            <input type="hidden" name="randomID" value="${randomID}" />
+            <br/><span class="error">#{error 'code'/}</span><br/>
+        </li>
+
 		<li class="buttons "><p class="buttons"><input type="submit" value="Soumettre"  class="button blue "/></p>
 		</li>
 </ul>

@@ -35,6 +35,10 @@ import models.Zindep;
 import models.ZindepAvailabilitiesEntry;
 import notifiers.Mails;
 import play.Logger;
+import play.cache.Cache;
+import play.data.validation.Required;
+import play.libs.Codec;
+import play.libs.Images;
 import play.mvc.Controller;
 import play.mvc.Router;
 
@@ -225,7 +229,8 @@ public class Application extends Controller {
      */
     public static void mission() {
         Propal propal = new Propal();
-        render(propal);
+		String randomID = Codec.UUID();
+        render(propal, randomID);
     }
 
     /**
@@ -233,7 +238,19 @@ public class Application extends Controller {
      *
      * @param propal est la nouvelle mission
      */
-    public static void submitMission(Propal propal) {
+    public static void submitMission(Propal propal,
+			@Required(message="Ce champ est obligatoire") String code,
+            String randomID) {
+		validation.equals(
+		        code, Cache.get(randomID)
+		    ).message("Code invalide, veuillez le ressaisir");
+
+		if(validation.hasErrors()) {
+			flash.error("Erreur, impossible de créer votre demande, merci de corriger le formulaire");
+		   validation.keep();
+			render("Application/mission.html", propal, randomID);
+		}
+
         propal.creationDate = new Date();
         if (!propal.validateAndSave()) {
             flash.error("Erreur, impossible de créer votre demande, merci de corriger le formulaire");
@@ -346,5 +363,12 @@ public class Application extends Controller {
         flash.success("Message envoyé");
         showProfile(id, "", "");
     }
+
+	public static void captcha(String id) {
+		Images.Captcha captcha = Images.captcha();
+		String code = captcha.getText("#000000");
+		Cache.set(id, code, "10mn");
+		renderBinary(captcha);
+	}
 
 }
