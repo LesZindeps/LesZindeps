@@ -51,8 +51,10 @@ ${zindep.firstName} ${zindep.lastName}
     <div class="errorbox">${flash.error}</div>
 #{/if}
 #{form @sendMessage(zindep.id)}
+    <label for="email">Votre Email :</label>
+    <input id="email" name="email" title="Email" value="${email}"/><br/>
     <label for="msg">Votre Message :</label>
-    <textarea id="msg" rows="6" cols="60" name="message" title="Message"></textarea><br/>
+    <textarea id="msg" rows="6" cols="60" name="message" title="Message">${message}</textarea><br/>
     <input type="submit" value="Envoyer votre message" class="button blue large"/>
 #{/form}
 

@@ -3,8 +3,11 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+import models.Zindep;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import play.libs.Mail;
 import play.mvc.Http;
 import play.mvc.Http.Response;
 import play.mvc.Scope;
@@ -14,13 +17,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import static org.hamcrest.core.Is.is;
 
 public class ApplicationTest extends ZindepFunctionalTest {
 
     public static final String ZINDEP_AVAILABLE_FULL_TIME_EMAIL = "mark@knopfler.com";
-
     public static final String DATA_FOR_TESTS = "test-datas.yml";
     public static final String ATOM_CONTENT_TYPE = "application/atom+xml";
     public static final int OK = 200;
@@ -48,11 +51,28 @@ public class ApplicationTest extends ZindepFunctionalTest {
         assertThat(response.getHeader("Location"), is("/admin/index"));
     }
 
-
     @Test
     public void testThatBackofficePageIsProtected() {
         Response response = GET("/backoffice/index");
         assertStatus(302, response);
+    }
+
+    @Test
+    public void sendMessageUsingEmailAndContent() {
+        Mail.Mock.reset();
+        String responseEmail = "blabla@monmail.fr";
+        String mail = "pierre@letesteur.fr";
+
+        HashMap<String, String> parameters = new HashMap<String, String>();
+        parameters.put("id", Zindep.findByMail(mail).id);
+        parameters.put("message", "Message");
+        parameters.put("email", responseEmail);
+        POST("/application/sendmessage", parameters);
+
+        String mailReceived = Mail.Mock.getLastMessageReceivedBy(mail);
+
+        assertTrue("We searched 'From: " + responseEmail + "' within '" + mailReceived + "'", StringUtils.contains(mailReceived, "From: " + responseEmail));
+        assertTrue("We searched 'ReplyTo: " + responseEmail + "' within '" + mailReceived + "'", StringUtils.contains(mailReceived, "ReplyTo: " + responseEmail));
     }
 
     @Test
@@ -70,7 +90,6 @@ public class ApplicationTest extends ZindepFunctionalTest {
         Http.Request newRequest = setSessionWithNewRequest(session);
         Http.Response responseShowMyProfile = GET(newRequest, "/admin/showMyProfile");
         assertThat("response code for request /admin/showMyProfile " + responseShowMyProfile.status.toString() + " location=" + responseShowMyProfile.getHeader("Location"), responseShowMyProfile.status, is(200));
-        String content = responseShowMyProfile.out.toString("UTF-8");
         request = setSessionWithNewRequest(session);
         //change availability and save
 
@@ -93,7 +112,6 @@ public class ApplicationTest extends ZindepFunctionalTest {
             link = link.replaceFirst(URL_PREFIX_NOT_HANDLED_BY_FUNCTIONAL_TEST, "");
             Response dispoResponse = GET(setSessionWithNewRequest(session), link);
             assertThat(dispoResponse.status, is(200));
-            String dispoContent = dispoResponse.out.toString("UTF-8");
         }
     }
 

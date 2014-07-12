@@ -34,6 +34,7 @@ import models.Propal;
 import models.Zindep;
 import models.ZindepAvailabilitiesEntry;
 import notifiers.Mails;
+import org.apache.commons.lang.StringUtils;
 import play.Logger;
 import play.cache.Cache;
 import play.data.validation.Required;
@@ -222,7 +223,6 @@ public class Application extends Controller {
 
     }
 
-
     /**
      * Affiche le formulaire pour soumettre une mission.
      * Si nous avons besoin d'un captcha, il faudra mettre le code ici.
@@ -330,10 +330,15 @@ public class Application extends Controller {
      *
      * @param id      est l'id de l'indep à contacter
      * @param message est le message à envoyer
+     * @param email   l'email pour pouvoir répondre au message
      */
-    public static void sendMessage(String id, String message) {
+    public static void sendMessage(String id, String message, String email) {
         if (message == null) {
             flash.error("Votre message est vide");
+            showProfile(id, "", "");
+        }
+        if (StringUtils.isBlank(email)) {
+            flash.error("Votre email est vide");
             showProfile(id, "", "");
         }
         if (message.trim().isEmpty()) {
@@ -345,7 +350,7 @@ public class Application extends Controller {
             flash.error("Un probleme technique empêche l'envoi de message pour l'instant. Merci de retenter plus tard.");
             showProfile(id, "", "");
         }
-        Mails.sendMessageToUser(message, zindep.email);
+        Mails.sendMessageToUser(message, zindep.email, email);
         if (zindep.emailBackup != null) {
             if (zindep.emailBackup.trim().equals("")) {
                 // email invalide. J'en profite pour le nettoyer et sauver la fiche proprement
@@ -356,7 +361,7 @@ public class Application extends Controller {
                 validation.email(zindep.emailBackup);
                 // si le mail est valide alors envoie la copie
                 if (!validation.hasErrors()) {
-                    Mails.sendMessageToUser(message, zindep.emailBackup);
+                    Mails.sendMessageToUser(message, zindep.emailBackup, email);
                 }
             }
         }
