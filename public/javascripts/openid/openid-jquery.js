@@ -35,7 +35,7 @@ var openid = {
         $('#openid_choice').show();
         $('#openid_input_area').empty();
         
-        var i = 0;
+        var i = 1;
         // add box for each provider
         for (id in providers_large) {
         	if (this.all_small) {
