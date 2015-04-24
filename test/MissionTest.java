@@ -1,10 +1,11 @@
 import models.Mission;
 import org.junit.Assert;
 import org.junit.Test;
+import play.test.UnitTest;
 
 import static org.hamcrest.CoreMatchers.is;
 
-public class MissionTest {
+public class MissionTest extends UnitTest {
 
 
     @Test
