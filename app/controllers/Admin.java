@@ -114,7 +114,7 @@ public class Admin extends Controller {
         return new GoogleAuthorizationCodeTokenRequest(
                 TRANSPORT,
                 JSON_FACTORY,
-                "856980994888-o979bp449j9mqdc4ko0cp1njqtocr5cu.apps.googleusercontent.com",
+                "1041120357454-rqbheneac2amoqmm5onpkrj6hnq9ebid@developer.gserviceaccount.com",
                 clientSecret,
                 code, "postmessage").execute();
     }
