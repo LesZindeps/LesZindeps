@@ -29,7 +29,8 @@ package controllers;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import models.Propal;
 import models.Zindep;
 import play.Logger;
@@ -52,7 +53,7 @@ import java.util.Map;
 public class Admin extends Controller {
     public static final String ZINDEP_ID = "zindepId";
     public static final NetHttpTransport TRANSPORT = new NetHttpTransport();
-    public static final GsonFactory JSON_FACTORY = new GsonFactory();
+    public static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
     // Protege toutes les methodes sauf index et authentification via openid
     //et authenticateAs pour les tests
