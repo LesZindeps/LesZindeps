@@ -26,9 +26,14 @@
 
 package controllers;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import models.Propal;
 import models.Zindep;
 import play.Logger;
+import play.data.parsing.UrlEncodedParser;
 import play.data.validation.Error;
 import play.libs.OpenID;
 import play.mvc.Before;
@@ -46,6 +51,9 @@ import java.util.Map;
  */
 public class Admin extends Controller {
     public static final String ZINDEP_ID = "zindepId";
+    public static final NetHttpTransport TRANSPORT = new NetHttpTransport();
+    public static final GsonFactory JSON_FACTORY = new GsonFactory();
+
     // Protege toutes les methodes sauf index et authentification via openid
     //et authenticateAs pour les tests
 
@@ -53,6 +61,7 @@ public class Admin extends Controller {
             "logout",
             "authenticateWithLinkedIn",
             "authenticateOpenId",
+            "authenticateWithGSignin",
             "authenticateAs"
     })
     static void checkLogin() {
@@ -79,6 +88,34 @@ public class Admin extends Controller {
         flash.success("Vous avez été délogué.");
         index();
 
+    }
+
+   public static void authenticateWithGSignin() {
+        try {
+            //Parse the content, I not found how do better :(
+            Map<String, String[]> map = new UrlEncodedParser().parse(request.body);
+            String code = map.get("code")[0];
+
+            authenticateAs(getEmail(code));
+        } catch (Exception e) {
+            flash.error("Erreur Google Signin authentication failed!");
+            index();
+        }
+    }
+
+    private static String getEmail(String code) throws Exception {
+        GoogleTokenResponse tokenResponse = getGoogleToken(code);
+        return tokenResponse.parseIdToken().getPayload().getEmail();
+    }
+
+    private static GoogleTokenResponse getGoogleToken(String code) throws Exception {
+        String clientSecret = System.getProperty("googleClientSecret");
+        return new GoogleAuthorizationCodeTokenRequest(
+                TRANSPORT,
+                JSON_FACTORY,
+                "856980994888-o979bp449j9mqdc4ko0cp1njqtocr5cu.apps.googleusercontent.com",
+                clientSecret,
+                code, "postmessage").execute();
     }
 
     /**

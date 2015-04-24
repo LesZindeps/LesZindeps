@@ -7,6 +7,25 @@
 <link type="text/css" rel="stylesheet" href="@{'/public/stylesheets/openid/openid.css'}"/>
 <script type="text/javascript" src="@{'/public/javascripts/openid/openid-jquery.js'}"></script>
 <script type="text/javascript" src="@{'/public/javascripts/openid/openid-jquery-en.js'}"></script>
+<script src="https://apis.google.com/js/platform.js?onload=gSigninStart" async defer></script>
+<script>
+    function signInCallback(authResult) {
+        if (authResult['code']) {
+            // Hide the sign-in button now that the user is authorized
+            $('#gSigninButton').attr('style', 'display: none');
+
+            // Send the code to the server
+            $.ajax({
+                type: 'POST',
+                url: 'authenticateWithGSignin',
+                data: authResult,
+                success: function(result) {
+                    $("body").html(result);
+                }
+            });
+        }
+    }
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -28,6 +47,16 @@
         <div id="openid_choice">
             <p>Sélectionnez un fournisseur d'accès Open-ID</p>
 
+            <div id="gSigninButton">
+              <span class="g-signin"
+                    data-scope="https://www.googleapis.com/auth/plus.login"
+                    data-clientid="856980994888-o979bp449j9mqdc4ko0cp1njqtocr5cu.apps.googleusercontent.com"
+                    data-redirecturi="postmessage"
+                    data-accesstype="offline"
+                    data-cookiepolicy="single_host_origin"
+                    data-callback="signInCallback">
+              </span>
+            </div>
             <div id="openid_btns"></div>
         </div>
 
