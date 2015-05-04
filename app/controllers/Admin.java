@@ -43,6 +43,8 @@ import play.mvc.Controller;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.singletonList;
+
 /**
  * Ce controleur permet à chaque Zindep de gérer son profil librement.
  * Une bonne partie du code vient en fait de l'eXpress-Board.
@@ -97,7 +99,13 @@ public class Admin extends Controller {
             Map<String, String[]> map = new UrlEncodedParser().parse(request.body);
             String code = map.get("code")[0];
 
-            authenticateAs(getEmail(code));
+            String email = getEmail(code);
+            if (email == null) {
+                flash.error("Impossible to retrieve the email with the Google Token.");
+                index();
+            } else {
+                authenticateAs(email);
+            }
         } catch (Exception e) {
             flash.error("Erreur Google Signin authentication failed!");
             index();
@@ -114,9 +122,11 @@ public class Admin extends Controller {
         return new GoogleAuthorizationCodeTokenRequest(
                 TRANSPORT,
                 JSON_FACTORY,
-                "1041120357454-rqbheneac2amoqmm5onpkrj6hnq9ebid@developer.gserviceaccount.com",
+                "856980994888-o979bp449j9mqdc4ko0cp1njqtocr5cu.apps.googleusercontent.com",
                 clientSecret,
-                code, "postmessage").execute();
+                code, "postmessage")
+                .setScopes(singletonList("https://www.googleapis.com/auth/userinfo.email"))
+                .execute();
     }
 
     /**
